@@ -161,5 +161,5 @@ def getweather():
 
 getweather()
 scheduler = BackgroundScheduler()
-scheduler.add_job(getweather, 'interval', seconds = 24 * 60 * 60)  # 间隔24小时执行一次
+scheduler.add_job(getweather, 'interval', seconds = 3 * 60 * 60)  # 间隔24小时执行一次
 scheduler.start()  # 这里的调度任务是独立的一个线程
