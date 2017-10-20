@@ -151,14 +151,18 @@ def graph(source, list, values1, values2):
     #plt.xticks(timeseq, datelist, size='small', rotation=30)
 
 def getweather():
-    date = []
-    HI = []
-    LOW = []
-    source = 'EC'
+    global date
+    global HI
+    global LOW
+    global source
     iodata = getData(source, -79.399, 43.663)
     analyze(source, iodata)
     dailygraph()
 
+date = []
+HI = []
+LOW = []
+source = 'EC'
 getweather()
 scheduler = BackgroundScheduler()
 scheduler.add_job(getweather, 'interval', seconds = 3 * 60 * 60)  # 间隔24小时执行一次
