@@ -10,7 +10,7 @@ import urllib.request
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator, FuncFormatter
 import time
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 def getData(org,lon,lat):
     if org == 'GFS':
@@ -108,7 +108,7 @@ def graph(source, list, values1, values2):
     '''
     for i in range(0,len(list)):
         datelist.append(list[i])
-        datelist[i] = time.strftime('%d%H', time.localtime(list[i] / 1000.0 - 4 * 60 * 60))
+        datelist[i] = time.strftime('%d%H', time.localtime(list[i] / 1000.0 - 8 * 60 * 60))
         timeseq.append(i*3)
     print('DATELIST = ' + str(datelist))
     #dates = [datetime.datetime.strptime(elem, '%d %H') for elem in datelist]
@@ -144,7 +144,7 @@ def graph(source, list, values1, values2):
     ax1.xaxis.set_major_locator(MultipleLocator(12))
     if source == 'EC':
         plt.title('Toronto Weather Forecast for next 120 hours\n Model: ECMWF; Predict time from ' +
-                  time.strftime('20%y-%m-%d %H:00', time.localtime(list[0] / 1000.0 - 4 * 60 * 60)))
+                  time.strftime('20%y-%m-%d %H:00', time.localtime(list[0] / 1000.0 - 8 * 60 * 60)))
 
     plt.savefig("/root/web/static/detailplot.png")
     #plt.plot_date(dates, values)
@@ -164,6 +164,7 @@ HI = []
 LOW = []
 source = 'EC'
 getweather()
-scheduler = BackgroundScheduler()
-scheduler.add_job(getweather, 'interval', seconds = 3 * 60 * 60)  # 间隔24小时执行一次
-scheduler.start()  # 这里的调度任务是独立的一个线程
+
+sched = BlockingScheduler()
+sched.add_job(getweather, 'interval', seconds = 3 * 60 * 60)
+sched.start()
