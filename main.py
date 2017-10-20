@@ -88,7 +88,7 @@ def dailygraph():
     plt.xlabel("Date")
     plt.ylabel("Temperature(°C)")
     plt.title("Temprerature forecast in Toronto")
-    plt.savefig("/~/web/static/easyplot.jpg")
+    plt.savefig("/~/web/static/easyplot.png")
     #plt.show()
 
 def graph(source, list, values1, values2):
@@ -146,7 +146,7 @@ def graph(source, list, values1, values2):
         plt.title('Toronto Weather Forecast for next 120 hours\n Model: ECMWF; Predict time from ' +
                   time.strftime('20%y-%m-%d %H:00', time.localtime(list[0] / 1000.0 - 4 * 60 * 60)))
 
-    plt.savefig("/~/web/static/detailplot.jpg")
+    plt.savefig("/~/web/static/detailplot.png")
     #plt.plot_date(dates, values)
     #plt.xticks(timeseq, datelist, size='small', rotation=30)
 
