@@ -11,6 +11,13 @@ allowed = (
 	('admin','admin'),
 )
 
+def iscookie():
+    access = web.cookies().get('access')
+    if access:
+        return True
+    else:
+        return False
+
 class index:
     def GET(self):
         return "index Page."
@@ -38,11 +45,10 @@ class CookieSet:
 
 class CookieGet:
     def GET(self):
-        access = web.cookies().get('access')
-        if access:
-            return "Your Access status is: %s" % access
+        if iscookie():
+            return "Logged in"
         else:
-            return "Cookie does not exist."
+            return open(r'login.html', 'r').read()
 
 if __name__ == "__main__":
     app.run()
