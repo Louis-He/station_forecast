@@ -2,10 +2,10 @@
 #https://node.windy.com/forecast/v2.1/gfs/43.663/-79.399?source=detail
 #EC
 #https://node.windy.com/forecast/v2.1/ecmwf/43.663/-79.399?setup=summary&includeNow=true&source=hp
-import matplotlib
+import matplotlib as mpl
 import datetime
 import dateutil
-matplotlib.use('Agg')
+mpl.use('Agg')
 
 import json
 import urllib.request
@@ -14,11 +14,12 @@ import matplotlib.cm as cm
 import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator, FuncFormatter
+from matplotlib import gridspec
 from matplotlib import ticker, dates
 import time
 
-matplotlib.rcParams['xtick.direction'] = 'out'
-matplotlib.rcParams['ytick.direction'] = 'out'
+mpl.rcParams['xtick.direction'] = 'out'
+mpl.rcParams['ytick.direction'] = 'out'
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 
@@ -26,7 +27,9 @@ def getData(org,lon,lat):
     if org == 'GFS':
         data = urllib.request.urlopen('https://node.windy.com/forecast/v2.1/gfs/' + str(lat) +'/' + str(lon) + '?source=detail').read()
     if org == 'EC':
-        data = urllib.request.urlopen('https://node.windy.com/forecast/v2.1/ecmwf/' + str(lat) +'/' + str(lon) + '?setup=summary&includeNow=true&source=hp').read()
+        #data = urllib.request.urlopen('https://node.windy.com/forecast/v2.1/ecmwf/' + str(lat) +'/' + str(lon) + '?setup=summary&includeNow=true&source=hp').read()
+        data = urllib.request.urlopen('https://node.windy.com/forecast/v2.1/ecmwf/' + str(lat) + '/' + str(
+            lon) + '?source=detail').read()
     record = data.decode('UTF-8')
     data = json.loads(record)
 
@@ -55,6 +58,15 @@ def getdetail(org, lon,lat):
     record = data.decode('UTF-8')
     data = json.loads(record)
     return data
+
+def getgroundT(source,JSON):
+    model = JSON['header']['model']
+    reftime = JSON['header']['refTime']
+    T = JSON['data']['temp']
+    for i in range(0,len(T)):
+        T[i] = T[i] - 273.15
+
+    return T
 
 def analyze(source,JSON):
     global date
@@ -321,30 +333,31 @@ def getweather():
     global HI
     global LOW
     global source
-    #lon = -79.399
-    #lat = 43.663
+    # lon = -79.399
+    # lat = 43.663
     lon = 121.25
     lat = 31.45
     iodata = getdetail(source, lon, lat)
+    grounddata = getData(source, lon, lat)
     hourspoint = iodata['data']['hours']
 
-    for i in range(0,len(hourspoint)):
+    for i in range(0, len(hourspoint)):
         hourspoint[i] = hourspoint[i] / 1000.0
 
-    dates = [time.strftime('%m%d %Hz', time.localtime(ts)) for ts in hourspoint]
+    dates = [time.strftime('%d%Hz', time.localtime(ts)) for ts in hourspoint]
     newdates = []
     ticks = []
     count = 1
     for i in dates:
-        if count % 2 ==0:
+        if count % 2 == 0:
             newdates.append(i)
             ticks.append(count)
         count += 1
     print(dates)
 
     print('DATA RECEIVED.')
-    Tdata = analyzedetailT('EC',iodata)
-    RHdata = analyzedetailRH('EC',iodata)
+    Tdata = analyzedetailT('EC', iodata)
+    RHdata = analyzedetailRH('EC', iodata)
     WVdata = analyzedetailwindV('EC', iodata)
     WUdata = analyzedetailwindU('EC', iodata)
 
@@ -360,52 +373,52 @@ def getweather():
     else:
         LAT = 'N'
 
-
     xmax = len(Tdata[0])
     deltay = -50
-    x = np.arange(1, xmax+1, 1)
+    x = np.arange(1, xmax + 1, 1)
     y = np.arange(1000, 150, deltay)
     X, Y = np.meshgrid(x, y)
 
-    fig = plt.figure(figsize=(13,6),dpi=200)
-    fig.add_axes([0.1,0.1,0.8,0.78])
-    levels = [-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35]
-    CS = plt.contour(X, Y, Tdata, levels, colors = 'B')
-    norm = matplotlib.colors.Normalize(vmin=0, vmax=100)
-    plt.clabel(CS, inline=1, fontsize=8)
-    plt.title('Temperature and Humidity Forecast @ Louis-He\n'+'Forecast Location:'+str(lon)+LON+', '+str(lat)+LAT+'\n'+'Model:'+iodata['header']['model']+' Init time: ' + iodata['header']['refTime'] + ' UTC', multialignment='left', fontsize = 10)
-    plt.gca().invert_yaxis()
-    plt.contourf(X, Y, RHdata, cmap=cm.PuBu, norm=norm)
-    cbar = plt.colorbar()
-    cbar.set_label('%')
+    fig = plt.figure(figsize=(13, 6), dpi=200)
+
+    gs = gridspec.GridSpec(2, 2, width_ratios=[40, 1], height_ratios=[2.5, 1])
+    gs.update(wspace=0.05, hspace=0.045)
+    ax0 = plt.subplot(gs[0])
+
+    plt.title('Weather variables Forecast @ Louis-He\n' + 'Forecast Location:' + str(lon) + LON + ', ' + str(
+        lat) + LAT + '\n' + 'Model:' + iodata['header']['model'] + ' Init time: ' + iodata['header'][
+                  'refTime'] + ' UTC', loc='left', fontsize=11)
+    #ax0.add_axes([0.1, 0.1, 0.8, 0.78])
+    levels = [-50, -45, -40, -35, -30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 35]
+    CS = ax0.contour(X, Y, Tdata, levels, colors='B')
+    plt.ylabel('hpa')
+    norm = mpl.colors.Normalize(vmin=0, vmax=100)
+    ax0.clabel(CS, inline=1, fontsize=8)
+    ax0.invert_yaxis()
+    ax0.contourf(X, Y, RHdata, cmap=cm.PuBu, norm=norm)
+    ax0.barbs(X, Y, WUdata, WVdata, length=4,
+              sizes=dict(emptybarb=0, spacing=0.2, height=0.5), barb_increments=dict(half=2, full=4, flag=20),
+              linewidth=0.25, color='black')
+    ax0.set_xticks([])
+    ax0.set_xlim(1, count - 1)
+    ax0.set_ylim(1000, 200)
+
+    ax1 = plt.subplot(gs[1])
+    #ax2 = ax0.add_axes([0.92, 0.11, 0.018, 0.77])
+    cbar = mpl.colorbar.ColorbarBase(ax1, cmap=cm.PuBu, norm=norm, orientation='vertical', drawedges=False)
+    cbar.ax.set_ylabel('%', size=8)
     cbar.set_ticks(np.linspace(0, 100, 10))
     cbar.set_ticklabels(('0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'))
 
-    #Q = plt.quiver(X, Y, WUdata, WVdata)
-    plt.barbs(X, Y, WUdata, WVdata, length=4,
-            sizes=dict(emptybarb=0, spacing=0.2, height=0.5), barb_increments=dict(half=2, full=4, flag=20),
-            linewidth=0.4, color='black')
+    ax2 = plt.subplot(gs[2])
+    plt.ylabel('°C')
+    ax2.plot(x, getgroundT(source, grounddata), 'r-', label='Temperature')
+    plt.xticks(ticks, newdates, rotation=30)
+    plt.grid(True)
+    plt.savefig('TS_' + str(lon) + str(lat) + '.png')
 
-    plt.xticks(ticks, newdates, rotation=45)
-
-    plt.gca().set_xlim(1,count-1)
-    plt.gca().set_ylim(1000,200)
-    #plt.quiverkey(Q, 0.9, 0.9, 1, r'$1 \frac{m}{s}$', labelpos='E',coordinates='figure')
-    '''
-    dfm = matplotlib.dates.DateFormatter('%m-%d %Hz')
-    locator = matplotlib.dates.HourLocator(byhour=[0,12])
-    plt.gca().xaxis.set_major_formatter(dfm)
-    plt.gca().xaxis.set_major_locator(locator)
-    plt.gca().set_xlim((dates[0],dates[len(dates)-1]))
-    '''
-
-    #fig.autofmt_xdate()
-
-    #plt.show()
-    #analyze(source, iodata)
-    #dailygraph()
-    plt.savefig('TS_'+str(lon)+str(lat)+'.png')
-
+    # analyze(source, iodata)
+    # dailygraph()
 date = []
 HI = []
 LOW = []
