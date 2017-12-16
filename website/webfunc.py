@@ -25,10 +25,10 @@ class login:
         passwd = i.get('passwd')
         if (username, passwd) in allowed:
             i = web.input(access='True')
-            web.setcookie('access', i.access, 5)
+            web.setcookie('access', i.access, 30)
             return 'Login Success'
         else:
-            return '<h1>Login Error!!!</h1></br><a href="/login">Login</a>'
+            return 'Login Error\n Please check your username and password'
 
 class CookieSet:
     def GET(self):
