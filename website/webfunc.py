@@ -47,7 +47,6 @@ class logout:
         web.setcookie('access', i.access, 60)
         return open(r'logout.html', 'r').read()
 
-
 class CookieSet:
     def GET(self):
         i = web.input(access='True')
