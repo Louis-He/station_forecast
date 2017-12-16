@@ -52,7 +52,7 @@ def getData(org,lon,lat):
 
 def getdetail(org, lon,lat):
     if org == 'GFS':
-        data = urllib.request.urlopen('https://node.windy.com/forecast/v2.1/gfs/' + str(lat) +'/' + str(lon) + '?source=detail').read()
+        data = urllib.request.urlopen('https://node.windy.com/forecast/meteogram/gfs/' + str(lat) +'/' + str(lon)).read()
     if org == 'EC':
         data = urllib.request.urlopen('https://node.windy.com/forecast/meteogram/ecmwf/' + str(lat) +'/' + str(lon)).read()
     record = data.decode('UTF-8')
@@ -335,8 +335,8 @@ def getweather():
     global source
     # lon = -79.399
     # lat = 43.663
-    lon = 121.25
-    lat = 31.45
+    lon = 121.44
+    lat = 31.25
     iodata = getdetail(source, lon, lat)
     grounddata = getData(source, lon, lat)
     hourspoint = iodata['data']['hours']
@@ -356,10 +356,10 @@ def getweather():
     print(dates)
 
     print('DATA RECEIVED.')
-    Tdata = analyzedetailT('EC', iodata)
-    RHdata = analyzedetailRH('EC', iodata)
-    WVdata = analyzedetailwindV('EC', iodata)
-    WUdata = analyzedetailwindU('EC', iodata)
+    Tdata = analyzedetailT(source, iodata)
+    RHdata = analyzedetailRH(source, iodata)
+    WVdata = analyzedetailwindV(source, iodata)
+    WUdata = analyzedetailwindU(source, iodata)
 
     if lon < 0:
         lon = -1 * lon
@@ -379,7 +379,7 @@ def getweather():
     y = np.arange(1000, 150, deltay)
     X, Y = np.meshgrid(x, y)
 
-    fig = plt.figure(figsize=(13, 6), dpi=200)
+    fig = plt.figure(figsize=(13, 7), dpi=200)
 
     gs = gridspec.GridSpec(2, 2, width_ratios=[40, 1], height_ratios=[2.5, 1])
     gs.update(wspace=0.05, hspace=0.045)
@@ -411,18 +411,21 @@ def getweather():
     cbar.set_ticklabels(('0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'))
 
     ax2 = plt.subplot(gs[2])
+    y = getgroundT(source, grounddata)
     plt.ylabel('°C')
-    ax2.plot(x, getgroundT(source, grounddata), 'r-', label='Temperature')
+    ax2.plot(x, y, 'r-', label='Temperature')
+    for a, b in zip(x, y):
+        plt.text(a, b + 0.05, '%.1f' % b, ha='center', va='bottom', fontsize=7)
     plt.xticks(ticks, newdates, rotation=30)
     plt.grid(True)
-    plt.savefig('TS_' + str(lon) + str(lat) + '.png')
+    plt.savefig('website/static/images/TS_' + str(lon) + str(lat) + '.png')
 
     # analyze(source, iodata)
     # dailygraph()
 date = []
 HI = []
 LOW = []
-source = 'EC'
+source = 'GFS'
 getweather()
 '''
 sched = BlockingScheduler()
