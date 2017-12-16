@@ -6,6 +6,10 @@ urls = {
 }
 app = web.application(urls, globals())
 
+class index:
+    def GET(self):
+        return "index Page."
+
 class CookieSet:
     def GET(self):
         i = web.input(access='True')
@@ -19,6 +23,7 @@ class CookieGet:
             return "Your age is: %s" % age
         else:
             return "Cookie does not exist."
+
 if __name__ == "__main__":
     app.run()
 
