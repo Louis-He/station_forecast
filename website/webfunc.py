@@ -13,14 +13,17 @@ allowed = (
 
 def iscookie():
     access = web.cookies().get('access')
-    if access:
+    if access=='True':
         return True
     else:
         return False
 
 class index:
     def GET(self):
-        return "index Page."
+        if iscookie():
+            return open(r'index.html', 'r').read()
+        else:
+            return open(r'login.html', 'r').read()
 
 class login:
     def GET(self):
@@ -32,8 +35,8 @@ class login:
         passwd = i.get('passwd')
         if (username, passwd) in allowed:
             i = web.input(access='True')
-            web.setcookie('access', i.access, 30)
-            return 'Login Success'
+            web.setcookie('access', i.access, 60)
+            return open(r'index.html', 'r').read()
         else:
             return 'Login Error\n Please check your username and password'
 
