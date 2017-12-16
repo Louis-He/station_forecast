@@ -3,6 +3,7 @@ urls = (
     '/index', 'index',
     '/login', 'login',
     '/logout', 'logout',
+    '/logerror', 'logerror',
     '/setcookie', 'CookieSet',
     '/getcookie', 'CookieGet'
 )
@@ -39,7 +40,11 @@ class login:
             web.setcookie('access', i.access, 60)
             return open(r'index.html', 'r').read()
         else:
-            return 'Login Error\n Please check your username and password'
+            return open(r'logerror.html', 'r').read()
+
+class logerror:
+    def GET(self):
+        return open(r'logerror.html', 'r').read()
 
 class logout:
     def GET(self):
