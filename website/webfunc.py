@@ -18,9 +18,9 @@ class CookieSet:
 
 class CookieGet:
     def GET(self):
-        age=web.cookies().get('access')
-        if age:
-            return "Your age is: %s" % age
+        access = web.cookies().get('access')
+        if access:
+            return "Your Access status is: %s" % access
         else:
             return "Cookie does not exist."
 
