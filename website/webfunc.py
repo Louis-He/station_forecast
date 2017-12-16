@@ -1,9 +1,9 @@
 import web
-urls = {
+urls = (
     '/index', 'index',
     '/setcookie', 'CookieSet',
     '/getcookie', 'CookieGet'
-}
+)
 app = web.application(urls, globals())
 
 class index:
@@ -14,7 +14,7 @@ class CookieSet:
     def GET(self):
         i = web.input(access='True')
         web.setcookie('access', i.access, 3600)
-        return "Age set in your cookie"
+        return "ACCESS set in your cookie"
 
 class CookieGet:
     def GET(self):
