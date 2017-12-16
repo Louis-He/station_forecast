@@ -13,7 +13,7 @@ class index:
 class CookieSet:
     def GET(self):
         i = web.input(access='True')
-        web.setcookie('access', i.age, 3600)
+        web.setcookie('access', i.access, 3600)
         return "Age set in your cookie"
 
 class CookieGet:
