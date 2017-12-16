@@ -1,6 +1,8 @@
 import web
 urls = {
-    '/index', 'index'
+    '/index', 'index',
+    '/setcookie', 'CookieSet',
+    '/getcookie', 'CookieGet'
 }
 app = web.application(urls, globals())
 
