@@ -2,6 +2,7 @@ import web
 urls = (
     '/index', 'index',
     '/login', 'login',
+    '/logout', 'logout',
     '/setcookie', 'CookieSet',
     '/getcookie', 'CookieGet'
 )
@@ -39,6 +40,13 @@ class login:
             return open(r'index.html', 'r').read()
         else:
             return 'Login Error\n Please check your username and password'
+
+class logout:
+    def GET(self):
+        i = web.input(access='False')
+        web.setcookie('access', i.access, 60)
+        return open(r'logout.html', 'r').read()
+
 
 class CookieSet:
     def GET(self):
