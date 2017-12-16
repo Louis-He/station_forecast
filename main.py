@@ -367,7 +367,7 @@ def getweather():
     y = np.arange(1000, 150, deltay)
     X, Y = np.meshgrid(x, y)
 
-    fig = plt.figure(figsize=(14,6),dpi=150)
+    fig = plt.figure(figsize=(13,6),dpi=200)
     fig.add_axes([0.1,0.1,0.8,0.78])
     levels = [-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35]
     CS = plt.contour(X, Y, Tdata, levels, colors = 'B')
