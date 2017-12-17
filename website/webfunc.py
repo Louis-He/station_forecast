@@ -68,6 +68,7 @@ class missionlist:
 class product:
     def GET(self):
         if iscookie()==True:
+            print(open(r'product.html', 'r').read())
             return open(r'product.html', 'r').read()
         else:
             return open(r'login.html', 'r').read()
