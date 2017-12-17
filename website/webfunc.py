@@ -124,7 +124,7 @@ class product:
 
         if iscookie()==True:
             #print(open(r'product.html', 'r').read())
-            return open(r'producthead.html', 'r').read() + result + open(r'productbuttom.html', 'r').read()
+            return open(r'producthead.html', 'r').read() + result + open(r'productbottom.html', 'r').read()
         else:
             return open(r'login.html', 'r').read()
 
