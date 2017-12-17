@@ -2,6 +2,7 @@
 #https://node.windy.com/forecast/v2.1/gfs/43.663/-79.399?source=detail
 #EC
 #https://node.windy.com/forecast/v2.1/ecmwf/43.663/-79.399?setup=summary&includeNow=true&source=hp
+import sys
 import matplotlib as mpl
 import datetime
 import dateutil
@@ -328,15 +329,15 @@ def graph(source, list, values1, values2):
     #plt.plot_date(dates, values)
     #plt.xticks(timeseq, datelist, size='small', rotation=30)
 
-def getweather():
+def getweather(inlon,inlat):
     global date
     global HI
     global LOW
     global source
     # lon = -79.399
     # lat = 43.663
-    lon = 121.44
-    lat = 31.25
+    lon = inlon
+    lat = inlat
     iodata = getdetail(source, lon, lat)
     grounddata = getData(source, lon, lat)
     hourspoint = iodata['data']['hours']
@@ -422,11 +423,33 @@ def getweather():
 
     # analyze(source, iodata)
     # dailygraph()
+
+
+nargs=len(sys.argv)
+skip=False
+for i in range(1,nargs):
+   if not skip:
+      arg=sys.argv[i]
+      #print ("INFO: processing",arg)
+      if arg == "--lon":
+         if i != nargs-1:
+            lon = sys.argv[i+1]
+            skip = True
+      elif arg == "--lat":
+         if i != nargs-1:
+            lat = sys.argv[i+1]
+            skip = True
+      else:
+         print ("ERR: unknown arg:",arg)
+   else:
+      skip=False
+       
 date = []
 HI = []
 LOW = []
 source = 'GFS'
-getweather()
+#getweather(121.44, 31.25)
+getweather(lon, lat)
 '''
 sched = BlockingScheduler()
 sched.add_job(getweather, 'interval', seconds = 3 * 60 * 60)
