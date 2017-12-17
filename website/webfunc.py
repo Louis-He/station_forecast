@@ -25,14 +25,17 @@ def iscookie():
 
 class index:
     def GET(self):
-        if iscookie():
+        if iscookie()=="True":
             return open(r'index.html', 'r').read()
         else:
             return open(r'login.html', 'r').read()
 
 class login:
     def GET(self):
-        return open(r'login.html', 'r').read()
+        if iscookie()=="True":
+            return open(r'index.html', 'r').read()
+        else:
+            return open(r'login.html', 'r').read()
 
     def POST(self):
         i = web.input()
@@ -57,21 +60,21 @@ class logout:
 
 class missionlist:
     def GET(self):
-        if iscookie():
+        if iscookie()=="True":
             return open(r'missionlist.html', 'r').read()
         else:
             return open(r'login.html', 'r').read()
 
 class product:
     def GET(self):
-        if iscookie():
+        if iscookie()=="True":
             return open(r'product.html', 'r').read()
         else:
             return open(r'login.html', 'r').read()
 
 class addmission:
     def GET(self):
-        if iscookie():
+        if iscookie()=="True":
             return open(r'addmission.html', 'r').read()
         else:
             return open(r'login.html', 'r').read()
