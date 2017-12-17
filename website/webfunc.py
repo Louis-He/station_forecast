@@ -179,8 +179,6 @@ class addmission:
             print('ERROR')
 
         if iscookie()==True:
-            a = web.input(access='True')
-            web.setcookie('access', a.access, 600)
             return open(r'addmission.html', 'r').read()
         else:
             return web.redirect('login')
