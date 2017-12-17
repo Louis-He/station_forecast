@@ -150,6 +150,7 @@ class addmission:
     def GET(self):
         i = web.input()
         lon = (float)(i.get('lon'))
+        print(lon)
 
         if iscookie()==True:
             return open(r'addmission.html', 'r').read()
