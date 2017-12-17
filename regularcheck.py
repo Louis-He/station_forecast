@@ -28,7 +28,7 @@ def isnewmission():
 
 # main program to update all plots to the latest
 print('[' + time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() + utc * 60 * 60)) + ']' + '\tPlot System Start')
-count = 1 * 60 * 60 / 5
+count = 0
 while True:
     count += 1
     # delete all the products every hour
