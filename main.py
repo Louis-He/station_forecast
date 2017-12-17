@@ -418,7 +418,7 @@ def getweather():
         plt.text(a, b + 0.05, '%.1f' % b, ha='center', va='bottom', fontsize=7)
     plt.xticks(ticks, newdates, rotation=30)
     plt.grid(True)
-    plt.savefig('website/static/images/TS_' + str(lon) + str(lat) + '.png')
+    plt.savefig('website/static/images/TS_' + str(lon) + LON + str(lat) + LAT +'.png')
 
     # analyze(source, iodata)
     # dailygraph()
