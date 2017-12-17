@@ -8,6 +8,7 @@ urls = (
     '/missionlist', 'missionlist',
     '/product', 'product',
     '/addmission', 'addmission',
+    '/success', 'success',
     '/setcookie', 'CookieSet',
     '/getcookie', 'CookieGet'
 )
@@ -72,10 +73,49 @@ class logout:
 
 class missionlist:
     def GET(self):
+        result = ''
+        count = 1
+
+        f = open('waitlistmission.sh')  # Read waitlist mission
+        tmp = ''
+        line = f.readline()
+        while line:
+            tmp = line
+            tmp = tmp.replace('\n', '')
+            while (tmp.find(' ') != -1):
+                py = tmp[0:tmp.find(' ')]
+                tmp = tmp[tmp.find(' ') + 1:len(tmp)]
+
+                process = tmp[0:tmp.find(' ')]
+                tmp = tmp[tmp.find(' ') + 1:len(tmp)]
+
+                _lon = tmp[0:tmp.find(' ')]
+                tmp = tmp[tmp.find(' ') + 1:len(tmp)]
+
+                lon = tmp[0:tmp.find(' ')]
+                tmp = tmp[tmp.find(' ') + 1:len(tmp)]
+
+                _lat = tmp[0:tmp.find(' ')]
+                tmp = tmp[tmp.find(' ') + 1:len(tmp)]
+
+                lat = tmp[0:tmp.find(' ')]
+                tmp = tmp[tmp.find(' ') + 1:len(tmp)]
+
+                _source = tmp[0:tmp.find(' ')]
+                tmp = tmp[tmp.find(' ') + 1:len(tmp)]
+
+                source = tmp[0:len(tmp)]
+
+                result+='<tr><td>' + str(count) + '</td><td>' + source + '</td><td>' + lon + '</td><td>' + lat + '</td></tr>'
+
+            count += 1
+            line = f.readline()
+        f.close()
+
         if iscookie() == True:
-            return open(r'missionlist.html', 'r').read()
+            return open(r'missionlisthead.html', 'r').read() + result + open(r'missionlistbottom.html', 'r').read()
         else:
-            return open(r'login.html', 'r').read()
+            return web.redirect('login')
 
     def POST(self):
         i = web.input()
@@ -133,7 +173,7 @@ class product:
             #print(open(r'product.html', 'r').read())
             return open(r'producthead.html', 'r').read() + result + open(r'productbottom.html', 'r').read()
         else:
-            return open(r'login.html', 'r').read()
+            return web.redirect('login')
 
     def POST(self):
         i = web.input()
@@ -149,13 +189,24 @@ class product:
 class addmission:
     def GET(self):
         i = web.input()
-        lon = (float)(i.get('lon'))
-        print(lon)
+
+        try:
+            lon = (float)(i.get('lon'))
+            lat = (float)(i.get('lat'))
+            source = i.get('optionsRadios')
+            read = True
+            f = open('waitlistmission.sh', 'a+')
+            f.write('python3 main.py --lon ' + lon + ' --lat '+ lat +' --source ' + source + '\n')
+            f.close()
+
+            return web.redirect('success')
+        except:
+            read = False
 
         if iscookie()==True:
             return open(r'addmission.html', 'r').read()
         else:
-            return open(r'login.html', 'r').read()
+            return web.redirect('login')
 
     def POST(self):
         i = web.input()
@@ -167,6 +218,14 @@ class addmission:
             return open(r'index.html', 'r').read()
         else:
             return open(r'logerror.html', 'r').read()
+
+class success:
+    def GET(self):
+        if iscookie() == True:
+            return open(r'success.html', 'r').read()
+        else:
+            return web.redirect('login')
+
 
 class CookieSet:
     def GET(self):
@@ -182,5 +241,7 @@ class CookieGet:
             return open(r'login.html', 'r').read()
 
 if __name__ == "__main__":
+    f = open('sysreport/waitlistmission.sh', 'w+')
+    f.close()
     app.run()
 
