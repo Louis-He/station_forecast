@@ -33,12 +33,12 @@ while True:
     count += 1
     # delete all the products every hour
     if count >= 1 * 60 * 60 / 5:
+        count = 0
         path = 'website/static/images/'
         files = os.listdir(path)
         for file in files:
             if file[-3:] == 'png':
                 os.system('rm website/static/images/'+file)
-        count = 0
 
     if isnewmission():
         print('[' + time.strftime('%Y-%m-%d %H:%M:%S',
