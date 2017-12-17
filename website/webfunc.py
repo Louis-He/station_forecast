@@ -47,7 +47,7 @@ class login:
         if iscookie()==True:
             return open(r'index.html', 'r').read()
         else:
-            return open(r'login.html', 'r').read()
+            return web.redirect('login')
 
     def POST(self):
         i = web.input()
@@ -58,7 +58,7 @@ class login:
             web.setcookie('access', i.access, 180)
             return open(r'index.html', 'r').read()
         else:
-            return open(r'logerror.html', 'r').read()
+            return web.redirect('logerror')
 
 class logerror:
     def GET(self):
@@ -148,6 +148,7 @@ class product:
 
 class addmission:
     def GET(self):
+        print(web.input())
         if iscookie()==True:
             return open(r'addmission.html', 'r').read()
         else:
