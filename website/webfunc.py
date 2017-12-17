@@ -47,7 +47,7 @@ class login:
         if iscookie()==True:
             return open(r'index.html', 'r').read()
         else:
-            return web.redirect('login')
+            return open(r'login.html', 'r').read()
 
     def POST(self):
         i = web.input()
