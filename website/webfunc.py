@@ -191,15 +191,18 @@ class addmission:
         i = web.input()
         print(i)
 
-        lon = i.get('lon')
-        lat = i.get('lat')
-        source = i.get('optionsRadios')
-        read = True
-        f = open('waitlistmission.sh', 'a+')
-        f.write('python3 main.py --lon ' + lon + ' --lat '+ lat +' --source ' + source + '\n')
-        f.close()
+        try:
+            lon = i.get('lon')
+            lat = i.get('lat')
+            source = i.get('optionsRadios')
+            read = True
+            f = open('waitlistmission.sh', 'a+')
+            f.write('python3 main.py --lon ' + lon + ' --lat '+ lat +' --source ' + source + '\n')
+            f.close()
 
-        #return web.redirect('success')
+            return web.redirect('success')
+        except:
+            print('ERROR')
 
 
         if iscookie()==True:
