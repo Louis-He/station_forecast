@@ -336,8 +336,12 @@ def getweather(inlon,inlat):
     global source
     # lon = -79.399
     # lat = 43.663
-    lon = inlon
-    lat = inlat
+    try:
+        lon = float(inlon)
+        lat = float(inlat)
+    except:
+        return False
+
     iodata = getdetail(source, lon, lat)
     grounddata = getData(source, lon, lat)
     hourspoint = iodata['data']['hours']
@@ -421,6 +425,7 @@ def getweather(inlon,inlat):
     plt.grid(True)
     plt.savefig('website/static/images/TS_' + str(lon) + LON + str(lat) + LAT +'.png')
 
+    return True
     # analyze(source, iodata)
     # dailygraph()
 
@@ -443,7 +448,7 @@ for i in range(1,nargs):
          print ("ERR: unknown arg:",arg)
    else:
       skip=False
-       
+
 date = []
 HI = []
 LOW = []
