@@ -189,19 +189,18 @@ class product:
 class addmission:
     def GET(self):
         i = web.input()
+        print(i)
 
-        try:
-            lon = i.get('lon')
-            lat = i.get('lat')
-            source = i.get('optionsRadios')
-            read = True
-            f = open('waitlistmission.sh', 'a+')
-            f.write('python3 main.py --lon ' + lon + ' --lat '+ lat +' --source ' + source + '\n')
-            f.close()
+        lon = i.get('lon')
+        lat = i.get('lat')
+        source = i.get('optionsRadios')
+        read = True
+        f = open('waitlistmission.sh', 'a+')
+        f.write('python3 main.py --lon ' + lon + ' --lat '+ lat +' --source ' + source + '\n')
+        f.close()
 
-            return web.redirect('success')
-        except:
-            read = False
+        #return web.redirect('success')
+
 
         if iscookie()==True:
             return open(r'addmission.html', 'r').read()
