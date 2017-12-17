@@ -398,7 +398,7 @@ def getweather(inlon,inlat,insource):
     CS = ax0.contour(X, Y, Tdata, levels, linewidths=0.35, colors='B')
     plt.ylabel('hpa')
     norm = mpl.colors.Normalize(vmin=0, vmax=100)
-    ax0.clabel(CS, inline=1, fontsize=8, fmt='%.0f')
+    ax0.clabel(CS, inline=1, fontsize=7, fmt='%.0f')
     ax0.invert_yaxis()
     ax0.contourf(X, Y, RHdata, cmap=cm.PuBu, norm=norm)
     ax0.barbs(X, Y, WUdata, WVdata, length=4,

@@ -122,7 +122,7 @@ class product:
                     else:
                         lat = file[file.find('W') + 1:file.find('S') + 1]
 
-                result += '<p>时序图（模式：' + model + '坐标：'+ lon + ',' + lat +'）</p>'
+                result += '<p>时序图（模式：' + model + '  坐标：'+ lon + ',' + lat +'）</p>'
                 result += '</div></div></div><div class="overlay"></div></div></div></div></div><!-- col-lg-4 -->'
 
                 if colcount == 2:
