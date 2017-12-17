@@ -172,6 +172,8 @@ class addmission:
             read = True
             f = open('waitlistmission.sh', 'a+')
             f.write('python3 main.py --lon ' + lon + ' --lat '+ lat +' --source ' + source + '\n')
+            print('!![LON]!!'+lon)
+            print('!![LAT]!!'+lat)
             print('!![PRCOESS]!!')
             f.close()
 
