@@ -4,6 +4,9 @@ urls = (
     '/login', 'login',
     '/logout', 'logout',
     '/logerror', 'logerror',
+    '/missionlist', 'missionlist',
+    '/product', 'product',
+    '/addmission', 'addmission',
     '/setcookie', 'CookieSet',
     '/getcookie', 'CookieGet'
 )
@@ -37,7 +40,7 @@ class login:
         passwd = i.get('passwd')
         if (username, passwd) in allowed:
             i = web.input(access='True')
-            web.setcookie('access', i.access, 60)
+            web.setcookie('access', i.access, 180)
             return open(r'index.html', 'r').read()
         else:
             return open(r'logerror.html', 'r').read()
@@ -51,6 +54,27 @@ class logout:
         i = web.input(access='False')
         web.setcookie('access', i.access, 60)
         return open(r'logout.html', 'r').read()
+
+class missionlist:
+    def GET(self):
+        if iscookie():
+            return open(r'missionlist.html', 'r').read()
+        else:
+            return open(r'login.html', 'r').read()
+
+class product:
+    def GET(self):
+        if iscookie():
+            return open(r'product.html', 'r').read()
+        else:
+            return open(r'login.html', 'r').read()
+
+class addmission:
+    def GET(self):
+        if iscookie():
+            return open(r'addmission.html', 'r').read()
+        else:
+            return open(r'login.html', 'r').read()
 
 class CookieSet:
     def GET(self):
