@@ -32,7 +32,7 @@ class index:
 
 class login:
     def GET(self):
-        if iscookie()=="True":
+        if iscookie()==True:
             return open(r'index.html', 'r').read()
         else:
             return open(r'login.html', 'r').read()
