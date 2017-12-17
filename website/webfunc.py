@@ -30,6 +30,17 @@ class index:
         else:
             return open(r'login.html', 'r').read()
 
+    def POST(self):
+        i = web.input()
+        username = i.get('username')
+        passwd = i.get('passwd')
+        if (username, passwd) in allowed:
+            i = web.input(access='True')
+            web.setcookie('access', i.access, 180)
+            return open(r'index.html', 'r').read()
+        else:
+            return open(r'logerror.html', 'r').read()
+
 class login:
     def GET(self):
         if iscookie()==True:
@@ -65,6 +76,17 @@ class missionlist:
         else:
             return open(r'login.html', 'r').read()
 
+    def POST(self):
+        i = web.input()
+        username = i.get('username')
+        passwd = i.get('passwd')
+        if (username, passwd) in allowed:
+            i = web.input(access='True')
+            web.setcookie('access', i.access, 180)
+            return open(r'index.html', 'r').read()
+        else:
+            return open(r'logerror.html', 'r').read()
+
 class product:
     def GET(self):
         if iscookie()==True:
@@ -73,12 +95,34 @@ class product:
         else:
             return open(r'login.html', 'r').read()
 
+    def POST(self):
+        i = web.input()
+        username = i.get('username')
+        passwd = i.get('passwd')
+        if (username, passwd) in allowed:
+            i = web.input(access='True')
+            web.setcookie('access', i.access, 180)
+            return open(r'index.html', 'r').read()
+        else:
+            return open(r'logerror.html', 'r').read()
+
 class addmission:
     def GET(self):
         if iscookie()==True:
             return open(r'addmission.html', 'r').read()
         else:
             return open(r'login.html', 'r').read()
+
+    def POST(self):
+        i = web.input()
+        username = i.get('username')
+        passwd = i.get('passwd')
+        if (username, passwd) in allowed:
+            i = web.input(access='True')
+            web.setcookie('access', i.access, 180)
+            return open(r'index.html', 'r').read()
+        else:
+            return open(r'logerror.html', 'r').read()
 
 class CookieSet:
     def GET(self):
