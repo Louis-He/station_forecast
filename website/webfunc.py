@@ -191,8 +191,8 @@ class addmission:
         i = web.input()
 
         try:
-            lon = (float)(i.get('lon'))
-            lat = (float)(i.get('lat'))
+            lon = i.get('lon')
+            lat = i.get('lat')
             source = i.get('optionsRadios')
             read = True
             f = open('waitlistmission.sh', 'a+')
