@@ -241,7 +241,7 @@ class CookieGet:
             return open(r'login.html', 'r').read()
 
 if __name__ == "__main__":
-    f = open('sysreport/waitlistmission.sh', 'w+')
+    f = open('waitlistmission.sh', 'w+')
     f.close()
     app.run()
 
