@@ -149,6 +149,8 @@ class product:
 class addmission:
     def GET(self):
         print(web.input())
+        print(web.input(optionsRadios=[]))
+        #groupid = groupinfo.get('groupid', '')
         if iscookie()==True:
             return open(r'addmission.html', 'r').read()
         else:
