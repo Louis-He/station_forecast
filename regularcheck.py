@@ -37,7 +37,8 @@ while True:
         files = os.listdir(path)
         for file in files:
             if file[-3:] == 'png':
-                os.system('rm website/static/images'+file)
+                os.system('rm website/static/images/'+file)
+        count = 0
 
     if isnewmission():
         print('[' + time.strftime('%Y-%m-%d %H:%M:%S',
