@@ -38,7 +38,7 @@ class index:
         passwd = i.get('passwd')
         if (username, passwd) in allowed:
             i = web.input(access='True')
-            web.setcookie('access', i.access, 180)
+            web.setcookie('access', i.access, 600)
             return open(r'index.html', 'r').read()
         else:
             return open(r'logerror.html', 'r').read()
@@ -56,7 +56,7 @@ class login:
         passwd = i.get('passwd')
         if (username, passwd) in allowed:
             i = web.input(access='True')
-            web.setcookie('access', i.access, 180)
+            web.setcookie('access', i.access, 600)
             return open(r'index.html', 'r').read()
         else:
             return web.redirect('logerror')
@@ -123,7 +123,7 @@ class missionlist:
         passwd = i.get('passwd')
         if (username, passwd) in allowed:
             i = web.input(access='True')
-            web.setcookie('access', i.access, 180)
+            web.setcookie('access', i.access, 600)
             return open(r'index.html', 'r').read()
         else:
             return open(r'logerror.html', 'r').read()
@@ -181,7 +181,7 @@ class product:
         passwd = i.get('passwd')
         if (username, passwd) in allowed:
             i = web.input(access='True')
-            web.setcookie('access', i.access, 180)
+            web.setcookie('access', i.access, 600)
             return open(r'index.html', 'r').read()
         else:
             return open(r'logerror.html', 'r').read()
@@ -216,7 +216,7 @@ class addmission:
         passwd = i.get('passwd')
         if (username, passwd) in allowed:
             i = web.input(access='True')
-            web.setcookie('access', i.access, 180)
+            web.setcookie('access', i.access, 600)
             return open(r'index.html', 'r').read()
         else:
             return open(r'logerror.html', 'r').read()
