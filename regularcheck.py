@@ -28,11 +28,11 @@ def isnewmission():
 
 # main program to update all plots to the latest
 print('[' + time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() + utc * 60 * 60)) + ']' + '\tPlot System Start')
-count = 0
+count = 1 * 60 * 60 / 5
 while True:
     count += 1
-    # delete all the products every six hours
-    if count >= 6 * 60 * 60 / 5:
+    # delete all the products every hour
+    if count >= 1 * 60 * 60 / 5:
         path = 'website/static/images/'
         files = os.listdir(path)
         for file in files:
