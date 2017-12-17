@@ -104,6 +104,8 @@ class product:
                 result += '<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc"><div class="project-wrapper"><div class="project"><div class="photo-wrapper"><div class="photo">'
                 result += '<a class="fancybox" href="static/images/'+file+'"><img class="img-responsive" src="static/images/'+file+'" alt=""></a>'
                 result += '<div class="row mt"><div class="col-lg-12">'
+
+                model = file[0:file.find('_')]
                 file = file[file.find('_'):]
                 if file.find('E') != -1:
                     lon = file[1:file.find('E') + 1]
@@ -120,7 +122,7 @@ class product:
                     else:
                         lat = file[file.find('W') + 1:file.find('S') + 1]
 
-                result += '<p>时序图（坐标：'+ lon + ',' + lat +'）</p>'
+                result += '<p>时序图（模式：' + model + '坐标：'+ lon + ',' + lat +'）</p>'
                 result += '</div></div></div><div class="overlay"></div></div></div></div></div><!-- col-lg-4 -->'
 
                 if colcount == 2:

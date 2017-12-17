@@ -329,11 +329,11 @@ def graph(source, list, values1, values2):
     #plt.plot_date(dates, values)
     #plt.xticks(timeseq, datelist, size='small', rotation=30)
 
-def getweather(inlon,inlat):
+def getweather(inlon,inlat,insource):
     global date
     global HI
     global LOW
-    global source
+    source = insource
     # lon = -79.399
     # lat = 43.663
     try:
@@ -394,11 +394,11 @@ def getweather(inlon,inlat):
         lat) + LAT + '\n' + 'Model:' + iodata['header']['model'] + ' Init time: ' + iodata['header'][
                   'refTime'] + ' UTC', loc='left', fontsize=11)
     #ax0.add_axes([0.1, 0.1, 0.8, 0.78])
-    levels = [-50, -45, -40, -35, -30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 35]
-    CS = ax0.contour(X, Y, Tdata, levels, colors='B')
+    levels = np.arange(-50, 35, 2)
+    CS = ax0.contour(X, Y, Tdata, levels, linewidths=0.35, colors='B')
     plt.ylabel('hpa')
     norm = mpl.colors.Normalize(vmin=0, vmax=100)
-    ax0.clabel(CS, inline=1, fontsize=8)
+    ax0.clabel(CS, inline=1, fontsize=8, fmt='%.0f')
     ax0.invert_yaxis()
     ax0.contourf(X, Y, RHdata, cmap=cm.PuBu, norm=norm)
     ax0.barbs(X, Y, WUdata, WVdata, length=4,
@@ -423,12 +423,13 @@ def getweather(inlon,inlat):
         plt.text(a, b + 0.05, '%.1f' % b, ha='center', va='bottom', fontsize=7)
     plt.xticks(ticks, newdates, rotation=30)
     plt.grid(True)
-    plt.savefig('website/static/images/TS_' + str(lon) + LON + str(lat) + LAT +'.png')
+    plt.savefig('website/static/images/' + insource + '_' + str(lon) + LON + str(lat) + LAT +'.png')
 
     return True
     # analyze(source, iodata)
     # dailygraph()
 
+source = 'EC'
 
 nargs=len(sys.argv)
 skip=False
@@ -444,6 +445,10 @@ for i in range(1,nargs):
          if i != nargs-1:
             lat = sys.argv[i+1]
             skip = True
+      elif arg == "--source":
+         if i != nargs-1:
+            source = sys.argv[i+1]
+            skip = True
       else:
          print ("ERR: unknown arg:",arg)
    else:
@@ -452,9 +457,8 @@ for i in range(1,nargs):
 date = []
 HI = []
 LOW = []
-source = 'GFS'
 #getweather(121.44, 31.25)
-getweather(lon, lat)
+getweather(lon, lat, source)
 '''
 sched = BlockingScheduler()
 sched.add_job(getweather, 'interval', seconds = 3 * 60 * 60)
