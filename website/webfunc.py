@@ -28,20 +28,12 @@ def iscookie():
 class index:
     def GET(self):
         if iscookie()==True:
-            return open(r'index.html', 'r').read()
-        else:
-            return open(r'login.html', 'r').read()
-
-    def POST(self):
-        i = web.input()
-        username = i.get('username')
-        passwd = i.get('passwd')
-        if (username, passwd) in allowed:
             i = web.input(access='True')
             web.setcookie('access', i.access, 600)
             return open(r'index.html', 'r').read()
         else:
-            return open(r'logerror.html', 'r').read()
+            return web.redirect('login')
+
 
 class login:
     def GET(self):
@@ -68,7 +60,7 @@ class logerror:
 class logout:
     def GET(self):
         i = web.input(access='False')
-        web.setcookie('access', i.access, 60)
+        web.setcookie('access', i.access, 600)
         return open(r'logout.html', 'r').read()
 
 class missionlist:
@@ -113,20 +105,11 @@ class missionlist:
         f.close()
 
         if iscookie() == True:
+            i = web.input(access='True')
+            web.setcookie('access', i.access, 600)
             return open(r'missionlisthead.html', 'r').read() + result + open(r'missionlistbottom.html', 'r').read()
         else:
             return web.redirect('login')
-
-    def POST(self):
-        i = web.input()
-        username = i.get('username')
-        passwd = i.get('passwd')
-        if (username, passwd) in allowed:
-            i = web.input(access='True')
-            web.setcookie('access', i.access, 600)
-            return open(r'index.html', 'r').read()
-        else:
-            return open(r'logerror.html', 'r').read()
 
 class product:
     def GET(self):
@@ -170,21 +153,12 @@ class product:
                 colcount += 1
 
         if iscookie()==True:
+            i = web.input(access='True')
+            web.setcookie('access', i.access, 600)
             #print(open(r'product.html', 'r').read())
             return open(r'producthead.html', 'r').read() + result + open(r'productbottom.html', 'r').read()
         else:
             return web.redirect('login')
-
-    def POST(self):
-        i = web.input()
-        username = i.get('username')
-        passwd = i.get('passwd')
-        if (username, passwd) in allowed:
-            i = web.input(access='True')
-            web.setcookie('access', i.access, 600)
-            return open(r'index.html', 'r').read()
-        else:
-            return open(r'logerror.html', 'r').read()
 
 class addmission:
     def GET(self):
@@ -206,28 +180,20 @@ class addmission:
 
 
         if iscookie()==True:
+            i = web.input(access='True')
+            web.setcookie('access', i.access, 600)
             return open(r'addmission.html', 'r').read()
         else:
             return web.redirect('login')
 
-    def POST(self):
-        i = web.input()
-        username = i.get('username')
-        passwd = i.get('passwd')
-        if (username, passwd) in allowed:
-            i = web.input(access='True')
-            web.setcookie('access', i.access, 600)
-            return open(r'index.html', 'r').read()
-        else:
-            return open(r'logerror.html', 'r').read()
-
 class success:
     def GET(self):
         if iscookie() == True:
+            i = web.input(access='True')
+            web.setcookie('access', i.access, 600)
             return open(r'success.html', 'r').read()
         else:
             return web.redirect('login')
-
 
 class CookieSet:
     def GET(self):
