@@ -106,14 +106,21 @@ class product:
                 result += '<div class="row mt"><div class="col-lg-12">'
                 file = file[file.find('_'):]
                 if file.find('E') != -1:
-                    lon = file[0:file.find('E') + 1]
-                else:
-                    lon = file[0:file.find('W') + 1]
+                    lon = file[1:file.find('E') + 1]
 
-                if file.find('N') != -1:
-                    lat = file[0:file.find('N') + 1]
+                    if file.find('N') != -1:
+                        lat = file[file.find('E') + 1:file.find('N') + 1]
+                    else:
+                        lat = file[file.find('E') + 1:file.find('S') + 1]
                 else:
-                    lat = file[0:file.find('S') + 1]
+                    lon = file[1:file.find('W') + 1]
+
+                    if file.find('N') != -1:
+                        lat = file[file.find('W') + 1:file.find('N') + 1]
+                    else:
+                        lat = file[file.find('W') + 1:file.find('S') + 1]
+
+
 
                 result += '<p>时序图（坐标：'+ lon + ',' + lat +'）</p>'
                 result += '</div></div></div><div class="overlay"></div></div></div></div></div><!-- col-lg-4 -->'
