@@ -172,6 +172,7 @@ class addmission:
             read = True
             f = open('waitlistmission.sh', 'a+')
             f.write('python3 main.py --lon ' + lon + ' --lat '+ lat +' --source ' + source + '\n')
+            print('!![PRCOESS]!!')
             f.close()
 
             return web.redirect('success')
@@ -186,8 +187,6 @@ class addmission:
 class success:
     def GET(self):
         if iscookie() == True:
-            i = web.input(access='True')
-            web.setcookie('access', i.access, 600)
             return open(r'success.html', 'r').read()
         else:
             return web.redirect('login')
