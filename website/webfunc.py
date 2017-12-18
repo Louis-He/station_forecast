@@ -162,8 +162,11 @@ class product:
 
 class addmission:
     def GET(self):
+        try:
+            print(web.input())
+        except:
+            print('web input ERROR!!!!')
         i = web.input()
-        print(i)
 
         try:
             lon = i.get('lon')
