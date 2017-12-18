@@ -213,10 +213,10 @@ class GFSrain:
             #CNgfs.GFS2017121718.f120.png
             fcst = file[file.find('.') + file[file.find('.')+1:].find('.') + 3 : file.find('.png') ]
             print(fcst)
-            if fcst == downloadhour[count]:
+            if fcst == downloadhour[count] and count < len(downloadhour):
                 finalfilelist.append(file)
 
-            count+=1
+            count += 1
 
         for file in finalfilelist:
             if file[-3:] == 'png':
