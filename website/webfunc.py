@@ -9,7 +9,7 @@ urls = (
     '/product', 'product',
     '/addmission', 'addmission',
     '/success', 'success',
-    '/gfsrain', 'gfsrain',
+    '/GFSrain', 'GFSrain',
     '/setcookie', 'CookieSet',
     '/getcookie', 'CookieGet'
 )
@@ -191,7 +191,7 @@ class addmission:
         except:
             print('ERROR')
 
-class gfsrain:
+class GFSrain:
     def GET(self):
         path = 'static/images/model/GFS/RAIN'
         files = os.listdir(path)
