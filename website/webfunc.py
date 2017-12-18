@@ -162,6 +162,9 @@ class product:
 
 class addmission:
     def GET(self):
+        print('PROCESS GET method')
+
+
         try:
             print(web.input())
         except:
