@@ -199,7 +199,26 @@ class GFSrain:
         colcount = 0
         rowcount = 0
         result = ''
+
+        downloadhour = ['000', '006', '012', '018', '024', '030', '036', '042', '048', '054', '060', '066', '072',
+                        '078', '084',
+                        '090', '096', '102', '108', '114', '120', '126', '132', '138', '144', '150', '156', '162',
+                        '168', '174',
+                        '180', '186', '192', '198', '204', '210', '216', '222', '228', '234', '240']
+
+        count = 0
+
+        finalfilelist = []
         for file in files:
+            #CNgfs.GFS2017121718.f120.png
+            fcst = file[file.find('.') + file[file.find('.')+1:].find('.') + 3 : file.find('.png') ]
+            print(fcst)
+            if fcst == downloadhour[count]:
+                finalfilelist.append(file)
+
+            count+=1
+
+        for file in finalfilelist:
             if file[-3:] == 'png':
                 if colcount == 0:
                     result += '<div class="row mt">'
