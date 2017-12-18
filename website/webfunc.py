@@ -180,7 +180,6 @@ class addmission:
             f.write('python3 main.py --lon ' + lon + ' --lat '+ lat +' --source ' + source + '\n')
             print('!![PRCOESS]!!')
             f.close()
-
             return web.redirect('success')
         except:
             read = False
