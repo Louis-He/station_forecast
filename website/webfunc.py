@@ -44,7 +44,7 @@ class index:
 class login:
     def GET(self):
         if iscookie()==True:
-            return open(r'index.html', 'r').read()
+            return web.redirect('index')
         else:
             return open(r'login.html', 'r').read()
 
@@ -55,7 +55,7 @@ class login:
         if (username, passwd) in allowed:
             i = web.input(access='True')
             web.setcookie('access', i.access, 600)
-            return open(r'index.html', 'r').read()
+            return web.redirect('index')
         else:
             return web.redirect('logerror')
 
