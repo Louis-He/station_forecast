@@ -9,6 +9,7 @@ urls = (
     '/product', 'product',
     '/addmission', 'addmission',
     '/success', 'success',
+    '/gfsrain', 'gfsrain',
     '/setcookie', 'CookieSet',
     '/getcookie', 'CookieGet'
 )
@@ -189,6 +190,47 @@ class addmission:
             return web.redirect('success')
         except:
             print('ERROR')
+
+class gfsrain:
+    def GET(self):
+        path = 'static/images/model/GFS/RAIN'
+        files = os.listdir(path)
+        piclist = [];
+        colcount = 0
+        rowcount = 0
+        result = ''
+        for file in files:
+            if file[-3:] == 'png':
+                if colcount == 0:
+                    result += '<div class="row mt">'
+
+                result += '<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc"><div class="project-wrapper"><div class="project"><div class="photo-wrapper"><div class="photo">'
+                result += '<a class="fancybox" href="static/images/model/GFS/RAIN/'+file+'"><img class="img-responsive" src="static/images/model/GFS/RAIN/'+file+'" alt=""></a>'
+                result += '<div class="row mt"><div class="col-lg-12">'
+
+                file = file[file.find('.')+1:]
+                #year = file[file.find('GFS') + 3: file.find('GFS') + 7]
+                month = file[file.find('GFS') + 7: file.find('GFS') + 9]
+                day = file[file.find('GFS') + 9: file.find('GFS') + 11]
+                hour = file[file.find('GFS') + 11: file.find('GFS') + 13]
+
+                file = file[file.find('.') + 1:]
+                fch = file[file.find('f') + 1: file.find('.')]
+
+                result += '<p>降水（起报：' + month+'/'+day+'/'+hour + 'z  时效：' + fch +'）</p>'
+                result += '</div></div></div><div class="overlay"></div></div></div></div></div><!-- col-lg-4 -->'
+
+                if colcount == 2:
+                    result += '</div><!-- /row -->'
+                colcount += 1
+
+        if iscookie()==True:
+            i = web.input(access='True')
+            web.setcookie('access', i.access, 600)
+            #print(open(r'product.html', 'r').read())
+            return open(r'GFSrainhead.html', 'r').read() + result + open(r'GFSrainbottom.html', 'r').read()
+        else:
+            return web.redirect('login')
 
 class success:
     def GET(self):
