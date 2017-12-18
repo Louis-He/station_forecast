@@ -10,6 +10,8 @@ urls = (
     '/addmission', 'addmission',
     '/success', 'success',
     '/GFSrain', 'GFSrain',
+    '/GFSsurf', 'GFSsurf',
+    '/GFS500', 'GFS500',
     '/setcookie', 'CookieSet',
     '/getcookie', 'CookieGet'
 )
@@ -248,6 +250,126 @@ class GFSrain:
             web.setcookie('access', i.access, 600)
             #print(open(r'product.html', 'r').read())
             return open(r'GFSrainhead.html', 'r').read() + result + open(r'GFSrainbottom.html', 'r').read()
+        else:
+            return web.redirect('login')
+
+class GFSsurf:
+    def GET(self):
+        path = 'static/images/model/GFS/WTP'
+        files = os.listdir(path)
+        piclist = [];
+        colcount = 0
+        rowcount = 0
+        result = ''
+
+        downloadhour = ['000', '006', '012', '018', '024', '030', '036', '042', '048', '054', '060', '066', '072',
+                        '078', '084',
+                        '090', '096', '102', '108', '114', '120', '126', '132', '138', '144', '150', '156', '162',
+                        '168', '174',
+                        '180', '186', '192', '198', '204', '210', '216', '222', '228', '234', '240']
+
+        count = 0
+
+        finalfilelist = []
+        for count in range(0, len(downloadhour)):
+            for file in files:
+                #CNgfs.GFS2017121718.f120.png
+                fcst = file[file.find('.') + file[file.find('.')+1:].find('.') + 3 : file.find('.png') ]
+                print(fcst)
+
+                if fcst == downloadhour[count]:
+                    finalfilelist.append(file)
+
+        for file in finalfilelist:
+            if file[-3:] == 'png':
+                if colcount == 0:
+                    result += '<div class="row mt">'
+
+                result += '<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc"><div class="project-wrapper"><div class="project"><div class="photo-wrapper"><div class="photo">'
+                result += '<a class="fancybox" href="static/images/model/GFS/WTP/'+file+'"><img class="img-responsive" src="static/images/model/GFS/WTP/'+file+'" alt=""></a>'
+                result += '<div class="row mt"><div class="col-lg-12">'
+
+                file = file[file.find('.')+1:]
+                #year = file[file.find('GFS') + 3: file.find('GFS') + 7]
+                month = file[file.find('GFS') + 7: file.find('GFS') + 9]
+                day = file[file.find('GFS') + 9: file.find('GFS') + 11]
+                hour = file[file.find('GFS') + 11: file.find('GFS') + 13]
+
+                file = file[file.find('.') + 1:]
+                fch = file[file.find('f') + 1: file.find('.')]
+
+                result += '<p>地面要素（起报：' + month+'/'+day+'/'+hour + 'z  时效：' + fch +'）</p>'
+                result += '</div></div></div><div class="overlay"></div></div></div></div></div><!-- col-lg-4 -->'
+
+                if colcount == 2:
+                    result += '</div><!-- /row -->'
+                colcount += 1
+
+        if iscookie()==True:
+            i = web.input(access='True')
+            web.setcookie('access', i.access, 600)
+            #print(open(r'product.html', 'r').read())
+            return open(r'GFSsurfhead.html', 'r').read() + result + open(r'GFSsurfbottom.html', 'r').read()
+        else:
+            return web.redirect('login')
+
+class GFS500:
+    def GET(self):
+        path = 'static/images/model/GFS/WGP'
+        files = os.listdir(path)
+        piclist = [];
+        colcount = 0
+        rowcount = 0
+        result = ''
+
+        downloadhour = ['000', '006', '012', '018', '024', '030', '036', '042', '048', '054', '060', '066', '072',
+                        '078', '084',
+                        '090', '096', '102', '108', '114', '120', '126', '132', '138', '144', '150', '156', '162',
+                        '168', '174',
+                        '180', '186', '192', '198', '204', '210', '216', '222', '228', '234', '240']
+
+        count = 0
+
+        finalfilelist = []
+        for count in range(0, len(downloadhour)):
+            for file in files:
+                #CNgfs.GFS2017121718.f120.png
+                fcst = file[file.find('.') + file[file.find('.')+1:].find('.') + 3 : file.find('.png') ]
+                print(fcst)
+
+                if fcst == downloadhour[count]:
+                    finalfilelist.append(file)
+
+        for file in finalfilelist:
+            if file[-3:] == 'png':
+                if colcount == 0:
+                    result += '<div class="row mt">'
+
+                result += '<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc"><div class="project-wrapper"><div class="project"><div class="photo-wrapper"><div class="photo">'
+                result += '<a class="fancybox" href="static/images/model/GFS/WGP/'+file+'"><img class="img-responsive" src="static/images/model/GFS/WGP/'+file+'" alt=""></a>'
+                result += '<div class="row mt"><div class="col-lg-12">'
+
+                file = file[file.find('.')+1:]
+                #year = file[file.find('GFS') + 3: file.find('GFS') + 7]
+                month = file[file.find('GFS') + 7: file.find('GFS') + 9]
+                day = file[file.find('GFS') + 9: file.find('GFS') + 11]
+                hour = file[file.find('GFS') + 11: file.find('GFS') + 13]
+
+                file = file[file.find('.') + 1:]
+                fch = file[file.find('f') + 1: file.find('.')]
+
+                result += '<p>高空要素（起报：' + month+'/'+day+'/'+hour + 'z  时效：' + fch +'）</p>'
+                result += '</div></div></div><div class="overlay"></div></div></div></div></div><!-- col-lg-4 -->'
+
+                if colcount == 2:
+                    result += '</div><!-- /row -->'
+                colcount += 1
+
+        if iscookie()==True:
+            i = web.input(access='True')
+            web.setcookie('access', i.access, 600)
+            #print(open(r'product.html', 'r').read())
+            return open(r'GFS500head.html', 'r').read() + result + open(r'GFS500bottom.html', 'r').read()
         else:
             return web.redirect('login')
 
