@@ -180,9 +180,10 @@ class addmission:
 
             return web.redirect('success')
         except:
+            read = False
             print('ERROR')
 
-        if iscookie()==True:
+        if iscookie()==True and not read:
             return open(r'addmission.html', 'r').read()
         else:
             return web.redirect('login')
