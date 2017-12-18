@@ -416,6 +416,7 @@ def getweather(inlon,inlat,insource):
     cbar.set_ticklabels(('0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'))
 
     ax2 = plt.subplot(gs[2])
+    x = np.arange(1, len(getgroundT(source, grounddata)) + 1, 1)
     y = getgroundT(source, grounddata)
     plt.ylabel('°C')
     ax2.plot(x, y, 'r-', label='Temperature')
