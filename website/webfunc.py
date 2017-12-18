@@ -34,7 +34,6 @@ class index:
         else:
             return web.redirect('login')
 
-
 class login:
     def GET(self):
         if iscookie()==True:
@@ -163,8 +162,13 @@ class product:
 class addmission:
     def GET(self):
         print('PROCESS GET method')
+        if iscookie()==True:
+            return open(r'addmission.html', 'r').read()
+        else:
+            return web.redirect('login')
 
-
+    def POST(self):
+        print('PROCESS POST method')
         try:
             print(web.input())
         except:
@@ -178,20 +182,13 @@ class addmission:
             print('!![LON]!!' + lon)
             print('!![LAT]!!' + lat)
             print('!![SOURCE]!!' + source)
-            read = True
             f = open('waitlistmission.sh', 'a+')
-            f.write('python3 main.py --lon ' + lon + ' --lat '+ lat +' --source ' + source + '\n')
+            f.write('python3 main.py --lon ' + lon + ' --lat ' + lat + ' --source ' + source + '\n')
             print('!![PRCOESS]!!')
             f.close()
             return web.redirect('success')
         except:
-            read = False
             print('ERROR')
-
-        if iscookie()==True and not read:
-            return open(r'addmission.html', 'r').read()
-        else:
-            return web.redirect('login')
 
 class success:
     def GET(self):
