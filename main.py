@@ -404,7 +404,8 @@ def getweather(inlon,inlat,insource):
     ax0.barbs(X, Y, WUdata, WVdata, length=4,
               sizes=dict(emptybarb=0, spacing=0.2, height=0.5), barb_increments=dict(half=2, full=4, flag=20),
               linewidth=0.25, color='black')
-    ax0.set_xticks([])
+    #ax0.set_xticks([])
+    plt.xticks(ticks, newdates, rotation=30)
     ax0.set_xlim(1, count - 1)
     ax0.set_ylim(1000, 200)
 
@@ -415,6 +416,7 @@ def getweather(inlon,inlat,insource):
     cbar.set_ticks(np.linspace(0, 100, 10))
     cbar.set_ticklabels(('0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'))
 
+    '''
     ax2 = plt.subplot(gs[2])
     x = np.arange(1, len(getgroundT(source, grounddata)) + 1, 1)
     y = getgroundT(source, grounddata)
@@ -425,7 +427,7 @@ def getweather(inlon,inlat,insource):
     plt.xticks(ticks, newdates, rotation=30)
     plt.grid(True)
     plt.savefig('website/static/images/' + insource + '_' + str(lon) + LON + str(lat) + LAT +'.png')
-
+    '''
     return True
     # analyze(source, iodata)
     # dailygraph()
