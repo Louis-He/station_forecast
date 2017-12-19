@@ -383,7 +383,7 @@ def getverticalweather(inlon,inlat,insource):
 
     fig = plt.figure(figsize=(13, 7), dpi=200)
 
-    gs = gridspec.GridSpec(2, 2, width_ratios=[40, 1], height_ratios=[2.5, 1])
+    gs = gridspec.GridSpec(1, 2, width_ratios=[40, 1])
     gs.update(wspace=0.05, hspace=0.045)
     ax0 = plt.subplot(gs[0])
 
