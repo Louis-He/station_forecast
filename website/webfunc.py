@@ -102,9 +102,16 @@ class missionlist:
                 _source = tmp[0:tmp.find(' ')]
                 tmp = tmp[tmp.find(' ') + 1:len(tmp)]
 
-                source = tmp[0:len(tmp)]
+                source = tmp[0:tmp.find(' ')]
+                tmp = tmp[tmp.find(' ') + 1:len(tmp)]
 
-                result+='<tr><td>' + str(count) + '</td><td>' + source + '</td><td>' + lon + '</td><td>' + lat + '</td></tr>'
+                _type = tmp[0:tmp.find(' ')]
+                tmp = tmp[tmp.find(' ') + 1:len(tmp)]
+
+                type = tmp[0:len(tmp)]
+
+
+                result+='<tr><td>' + type + '</td><td>' + str(count) + '</td><td>' + source + '</td><td>' + lon + '</td><td>' + lat + '</td></tr>'
 
             count += 1
             line = f.readline()
