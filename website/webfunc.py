@@ -111,7 +111,7 @@ class missionlist:
                 type = tmp[0:len(tmp)]
 
 
-                result+='<tr><td>' + type + '</td><td>' + str(count) + '</td><td>' + source + '</td><td>' + lon + '</td><td>' + lat + '</td></tr>'
+                result+='<tr><td>' + str(count) + '</td><td>' + type + '</td><td>' + source + '</td><td>' + lon + '</td><td>' + lat + '</td></tr>'
 
             count += 1
             line = f.readline()
