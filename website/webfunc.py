@@ -134,6 +134,9 @@ class product:
                 result += '<a class="fancybox" href="static/images/'+file+'"><img class="img-responsive" src="static/images/'+file+'" alt=""></a>'
                 result += '<div class="row mt"><div class="col-lg-12">'
 
+                type = file[0:file.find('_')]
+                file = file[file.find('_') + 1:]
+
                 model = file[0:file.find('_')]
                 file = file[file.find('_'):]
                 if file.find('E') != -1:
@@ -150,8 +153,10 @@ class product:
                         lat = file[file.find('W') + 1:file.find('N') + 1]
                     else:
                         lat = file[file.find('W') + 1:file.find('S') + 1]
-
-                result += '<p>时序图（模式：' + model + '  坐标：'+ lon + ',' + lat +'）</p>'
+                if type == 'V':
+                    result += '<p>垂直剖面时序图（模式：' + model + '  坐标：'+ lon + ',' + lat +'）</p>'
+                elif type == 'G':
+                    result += '<p>地面要素时序图（模式：' + model + '  坐标：' + lon + ',' + lat + '）</p>'
                 result += '</div></div></div><div class="overlay"></div></div></div></div></div><!-- col-lg-4 -->'
 
                 if colcount == 2:
@@ -186,11 +191,13 @@ class addmission:
             lon = i.get('lon')
             lat = i.get('lat')
             source = i.get('optionsRadios')
+            plottype = i.get('plottype')
             print('!![LON]!!' + lon)
             print('!![LAT]!!' + lat)
             print('!![SOURCE]!!' + source)
+            print('!![PLOT_TYPE]!!' + plottype)
             f = open('waitlistmission.sh', 'a+')
-            f.write('python3 main.py --lon ' + lon + ' --lat ' + lat + ' --source ' + source + '\n')
+            f.write('python3 main.py --lon ' + lon + ' --lat ' + lat + ' --source ' + source + ' --type' + plottype + '\n')
             print('!![PRCOESS]!!')
             f.close()
             return web.redirect('success')

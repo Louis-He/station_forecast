@@ -329,10 +329,7 @@ def graph(source, list, values1, values2):
     #plt.plot_date(dates, values)
     #plt.xticks(timeseq, datelist, size='small', rotation=30)
 
-def getweather(inlon,inlat,insource):
-    global date
-    global HI
-    global LOW
+def getverticalweather(inlon,inlat,insource):
     source = insource
     # lon = -79.399
     # lat = 43.663
@@ -343,7 +340,7 @@ def getweather(inlon,inlat,insource):
         return False
 
     iodata = getdetail(source, lon, lat)
-    grounddata = getData(source, lon, lat)
+    #grounddata = getData(source, lon, lat)
     hourspoint = iodata['data']['hours']
 
     for i in range(0, len(hourspoint)):
@@ -427,7 +424,125 @@ def getweather(inlon,inlat,insource):
     plt.xticks(ticks, newdates, rotation=30)
     plt.grid(True)
     '''
-    plt.savefig('website/static/images/' + insource + '_' + str(lon) + LON + str(lat) + LAT +'.png')
+    plt.savefig('website/static/images/V_' + insource + '_' + str(lon) + LON + str(lat) + LAT +'.png')
+
+    return True
+    # analyze(source, iodata)
+    # dailygraph()
+
+def getgroundweather(inlon,inlat,insource):
+    source = insource
+    # lon = -79.399
+    # lat = 43.663
+    try:
+        lon = float(inlon)
+        lat = float(inlat)
+    except:
+        return False
+
+    #iodata = getdetail(source, lon, lat)
+    grounddata = getData(source, lon, lat)
+    hourspoint = grounddata['data']['ts']
+
+    for i in range(0, len(hourspoint)):
+        hourspoint[i] = hourspoint[i] / 1000.0
+
+    dates = [time.strftime('%d%Hz', time.localtime(ts)) for ts in hourspoint]
+    newdates = []
+    ticks = []
+    count = 1
+    for i in dates:
+        if count % 2 == 0:
+            newdates.append(i)
+            ticks.append(count)
+        count += 1
+    print(dates)
+
+    print('DATA RECEIVED.')
+    T = grounddata['data']['temp']
+    dew = grounddata['data']['dewPoint']
+    pp = grounddata['data']['mm']
+    pressure = grounddata['data']['pressure']
+    wind = grounddata['data']['wind']
+    rh = grounddata['data']['rh']
+
+    Tdata = []
+    Pdata = []
+    dewdata = []
+    for i in T:
+       Tdata.append(i - 273.15)
+    for i in dew:
+       dewdata.append(i - 273.15)
+    for i in pressure:
+       Pdata.append(i / 100)
+
+    if lon < 0:
+        lon = -1 * lon
+        LON = 'W'
+    else:
+        LON = 'E'
+
+    if lat < 0:
+        lat = -1 * lat
+        LAT = 'S'
+    else:
+        LAT = 'N'
+
+    fig = plt.figure(figsize=(11, 11), dpi=200)
+
+    gs = gridspec.GridSpec(5, 1, height_ratios=[2, 1, 1, 1, 1])
+    gs.update(wspace=0.05, hspace=0.045)
+    ax0 = plt.subplot(gs[0])
+    plt.title('Weather variables Forecast @ Louis-He\n' + 'Forecast Location:' + str(lon) + LON + ', ' + str(
+        lat) + LAT + '\n' + 'Model:' + grounddata['header']['model'] + ' Init time: ' + grounddata['header'][
+                  'refTime'] + ' UTC', loc='left', fontsize=11)
+    x = np.arange(1, len(Tdata) + 1, 1)
+    plt.ylabel('°C')
+    ax0.plot(x, Tdata, 'r-', label='Temperature')
+    ax0.plot(x, dewdata, 'b-', label='Dew')
+    for a, b in zip(x, Tdata):
+        plt.text(a, b + 0.05, '%.1f' % b, ha='center', va='bottom', fontsize=7)
+    ax0.set_xticks([])
+    plt.xticks(ticks, newdates, rotation=30)
+    plt.grid(True)
+
+    ax1 = plt.subplot(gs[1])
+    plt.ylabel('mm')
+    ax1.plot(x, pp, 'b-', label='Precipitation')
+    for a, b in zip(x, pp):
+        plt.text(a, b + 0.05, '%.1f' % b, ha='center', va='bottom', fontsize=7)
+    ax1.set_xticks([])
+    plt.xticks(ticks, newdates, rotation=30)
+    plt.grid(True)
+
+    ax2 = plt.subplot(gs[2])
+    plt.ylabel('%')
+    ax2.plot(x, rh, 'g-', label='Humidity')
+    for a, b in zip(x, rh):
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=7)
+    ax2.set_xticks([])
+    plt.xticks(ticks, newdates, rotation=30)
+    plt.grid(True)
+
+    ax3 = plt.subplot(gs[3])
+    plt.ylabel('m/s')
+    ax3.plot(x, wind, 'r-', label='Wind')
+    for a, b in zip(x, wind):
+        plt.text(a, b + 0.05, '%.1f' % b, ha='center', va='bottom', fontsize=7)
+    ax3.set_xticks([])
+    plt.xticks(ticks, newdates, rotation=30)
+    plt.grid(True)
+
+
+    ax4 = plt.subplot(gs[4])
+    plt.ylabel('hPa')
+    ax4.plot(x, Pdata, 'b-', label='Pressure')
+    ax4.set_xticks([])
+
+    plt.xticks(ticks, newdates, rotation=30)
+    plt.grid(True)
+
+    plt.savefig('website/static/images/G_' + insource + '_' + str(lon) + LON + str(lat) + LAT +'.png')
 
     return True
     # analyze(source, iodata)
@@ -453,6 +568,10 @@ for i in range(1,nargs):
          if i != nargs-1:
             source = sys.argv[i+1]
             skip = True
+      elif arg == "--type":
+          if i != nargs - 1:
+              plottype = sys.argv[i + 1]
+              skip = True
       else:
          print ("ERR: unknown arg:",arg)
    else:
@@ -462,7 +581,11 @@ date = []
 HI = []
 LOW = []
 #getweather(121.44, 31.25)
-getweather(lon, lat, source)
+#getverticalweather(lon, lat, source)
+if plottype == 'vertical':
+    getverticalweather(lon, lat, source)
+elif plottype == 'ground':
+    getgroundweather(lon, lat, source)
 '''
 sched = BlockingScheduler()
 sched.add_job(getweather, 'interval', seconds = 3 * 60 * 60)
