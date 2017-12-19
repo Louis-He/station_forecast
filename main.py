@@ -679,7 +679,8 @@ def getairrelated(inlon,inlat):
                     subSWI += 3
 
                 SWI.append(subSWI)
-            print('[analyze complete]-file: ' + file)
+                print('[analyze complete]-file: ' + file)
+
 
     fig = plt.figure(figsize=(10, 9), dpi=200)
 
