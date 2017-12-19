@@ -8,6 +8,9 @@ import datetime
 import dateutil
 mpl.use('Agg')
 
+import os
+import math
+import pygrib
 import json
 import urllib.request
 import numpy as np
@@ -548,6 +551,177 @@ def getgroundweather(inlon,inlat,insource):
     # analyze(source, iodata)
     # dailygraph()
 
+def getairrelated(inlon,inlat):
+    try:
+        float(inlon)
+        float(inlat)
+    except:
+        return False
+
+    lat = round(float(inlat) * 4) / 4
+    if float(inlon) < 0:
+        lon = round((360 + float(inlon)) * 4) / 4
+    else:
+        lon = round(float(inlon) * 4) / 4
+
+    hours = ['000', '006', '012', '018', '024', '030', '036', '042', '048', '054', '060', '066', '072', '078',
+             '084',
+             '090', '096', '102', '108', '114', '120']
+
+
+
+    #data need:
+    mslp = []
+    rh_2m = []
+    AV_850 = [] # absolute vorticity
+    wind_10m = []
+    VS_850 = [] # vertical speed
+    PBL = [] # planetary Boundary Layer
+    RT = [] # reverse T
+    SWI = []
+
+    path = '/root/GFS/rawfile/'
+    files = os.listdir(path)
+    for i in range(0,len(hours)):
+        for file in files:
+            if file[-3:] == hours[i]:
+                subSWI = 0
+                # read in files
+                grbs = pygrib.open(path + file)
+
+                MSLP_layer = grbs.select(name='MSLP (Eta model reduction)')[0]
+                if hours[i] == '000':
+                    # define the initial forecast hour
+                    analysistime = MSLP_layer.analDate
+                    fcit = analysistime.timetuple()  # time.struct_time
+                    formatfcit = time.strftime('%Hz %m %d %Y', fcit)  # formatted initial time
+                    timestampfcit = time.mktime(fcit)  # timestamp of initial time
+
+                    fcst = MSLP_layer.forecastTime  # integer
+                    formatvalid = time.strftime('%Hz %m %d %Y',
+                                                time.localtime(timestampfcit + fcst * 60 * 60))  # formatted validtime
+
+
+                data, lats, lons = MSLP_layer.data(lat1=lat, lat2=lat, lon1=lon, lon2=lon)
+                mslp.append(float(data)/1000)
+                del MSLP_layer
+
+                if float(data) <= 1030 and float(data) >= 1010:
+                    subSWI += 1
+
+                RH_layer = grbs.select(name='2 metre relative humidity')[0]
+                data, lats, lons = RH_layer.data(lat1=lat, lat2=lat, lon1=lon, lon2=lon)
+                rh_2m.append(float(data))
+                del RH_layer
+                if float(data) >= 90:
+                    subSWI += 5
+                elif float(data) >= 80:
+                    subSWI += 4
+                elif float(data) >= 70:
+                    subSWI += 3
+                elif float(data) >= 60:
+                    subSWI += 2
+                elif float(data) >= 40:
+                    subSWI += 1
+
+                AV_layer = grbs.select(name='Absolute vorticity')[20]
+                data, lats, lons = AV_layer.data(lat1=lat, lat2=lat, lon1=lon, lon2=lon)
+                AV_850.append(float(data))
+                del AV_layer
+                if float(data) <= 0.00002:
+                    subSWI += 5
+
+                U_10m_layer = grbs.select(name='10 metre U wind component')[0]
+                V_10m_layer = grbs.select(name='10 metre V wind component')[0]
+                data, lats, lons = U_10m_layer.data(lat1=lat, lat2=lat, lon1=lon, lon2=lon)
+                data2, lats, lons = V_10m_layer.data(lat1=lat, lat2=lat, lon1=lon, lon2=lon)
+                w = math.sqrt(float(data) * float(data) + float(data2) * float(data2))
+                wind_10m.append(w)
+                del U_10m_layer, V_10m_layer, data2
+                if w <= 2:
+                    subSWI += 4
+                elif w <= 3:
+                    subSWI += 3
+                elif w <= 4:
+                    subSWI += 1
+                del w
+
+                VS_850_layer = grbs.select(name='Vertical velocity')[15]
+                data, lats, lons = VS_850_layer.data(lat1=lat, lat2=lat, lon1=lon, lon2=lon)
+                VS_850.append(float(data))
+                del VS_850_layer
+                if float(data) <= 0.2:
+                    subSWI += 2
+
+                PBL_layer = grbs.select(name='Planetary boundary layer height')[0]
+                data, lats, lons = PBL_layer.data(lat1=lat, lat2=lat, lon1=lon, lon2=lon)
+                PBL.append(float(data))
+                del PBL_layer
+                if float(data) <= 300:
+                    subSWI += 4
+                elif float(data) <= 800:
+                    subSWI += 2
+                elif float(data) <= 1500:
+                    subSWI += 1
+
+                #find reverse T layer
+                T850_layer = grbs.select(name='Temperature')[25]
+                T850, lats, lons = T850_layer.data(lat1=lat, lat2=lat, lon1=lon, lon2=lon)
+                del T850_layer
+                T925_layer = grbs.select(name='Temperature')[27]
+                T925, lats, lons = T925_layer.data(lat1=lat, lat2=lat, lon1=lon, lon2=lon)
+                del T925_layer
+                T1000_layer = grbs.select(name='Temperature')[30]
+                T1000, lats, lons = T1000_layer.data(lat1=lat, lat2=lat, lon1=lon, lon2=lon)
+                del T1000_layer
+
+                if T850>T925 or T925>T1000 or T850>T1000:
+                    subSWI += 3
+
+                SWI.append(subSWI)
+            print('[analyze complete]-file: ' + file)
+
+    fig = plt.figure(figsize=(10, 9), dpi=200)
+
+    gs = gridspec.GridSpec(5, 1, height_ratios=[2, 1, 1, 1, 1])
+    gs.update(wspace=0.05, hspace=0.045)
+    ax0 = plt.subplot(gs[0])
+    plt.title('Air quality related Variables Forecast @ Louis-He\n' + 'Forecast Location:' + str(lon) + ', ' + str(
+        lat) + '\n' + 'Model: GFS, Init time: ' + formatfcit, loc='left', fontsize=11)
+    x = np.arange(1, len(mslp) + 1, 1)
+    plt.ylabel('SWI(no unit)')
+    ax0.plot(x, SWI, 'r-', label='SWI')
+    for a, b in zip(x, SWI):
+        plt.text(a, b + 0.05, '%.1f' % b, ha='center', va='bottom', fontsize=7)
+    ax0.set_xticks([])
+    plt.xticks(x, hours, rotation=30)
+    plt.grid(True)
+
+    ax1 = plt.subplot(gs[1])
+    plt.ylabel('wind(m/s)')
+    ax1.plot(x, wind_10m, 'b-', label='wind')
+    for a, b in zip(x, wind_10m):
+        plt.text(a, b + 0.05, '%.1f' % b, ha='center', va='bottom', fontsize=7)
+    ax1.set_xticks([])
+    plt.xticks(x, hours, rotation=30)
+    plt.grid(True)
+
+    ax2 = plt.subplot(gs[2])
+    plt.ylabel('PBLH(m)')
+    ax2.plot(x, PBL, 'g-', label='PBLH')
+    for a, b in zip(x, PBL):
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=7)
+    ax2.set_xticks([])
+    plt.xticks(x, hours, rotation=30)
+    plt.grid(True)
+
+    plt.xticks(x, hours, rotation=30)
+    plt.grid(True)
+
+    plt.savefig('website/static/images/E_GFS_' + str(lon) + 'E' + str(lat) + 'N' + '.png')
+    print('Air related plot complete')
+    return True
+
 source = 'EC'
 
 nargs=len(sys.argv)
@@ -586,6 +760,8 @@ if plottype == 'vertical':
     getverticalweather(lon, lat, source)
 elif plottype == 'ground':
     getgroundweather(lon, lat, source)
+elif plottype == 'air':
+    getairrelated(lon, lat)
 '''
 sched = BlockingScheduler()
 sched.add_job(getweather, 'interval', seconds = 3 * 60 * 60)
