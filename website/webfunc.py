@@ -197,7 +197,7 @@ class addmission:
             print('!![SOURCE]!!' + source)
             print('!![PLOT_TYPE]!!' + plottype)
             f = open('waitlistmission.sh', 'a+')
-            f.write('python3 main.py --lon ' + lon + ' --lat ' + lat + ' --source ' + source + ' --type' + plottype + '\n')
+            f.write('python3 main.py --lon ' + lon + ' --lat ' + lat + ' --source ' + source + ' --type ' + plottype + '\n')
             print('!![PRCOESS]!!')
             f.close()
             return web.redirect('success')
