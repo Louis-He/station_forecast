@@ -465,6 +465,8 @@ def getgroundweather(inlon,inlat,insource):
     T = grounddata['data']['temp']
     dew = grounddata['data']['dewPoint']
     pp = grounddata['data']['mm']
+    snow = grounddata['data']['snowPrecip']
+    rain = []
     pressure = grounddata['data']['pressure']
     wind = grounddata['data']['wind']
     rh = grounddata['data']['rh']
@@ -478,6 +480,8 @@ def getgroundweather(inlon,inlat,insource):
        dewdata.append(i - 273.15)
     for i in pressure:
        Pdata.append(i / 100)
+    for i in range(0,len(pp)):
+        rain.append(pp[i] - snow[i])
 
     if lon < 0:
         lon = -1 * lon
@@ -491,7 +495,7 @@ def getgroundweather(inlon,inlat,insource):
     else:
         LAT = 'N'
 
-    fig = plt.figure(figsize=(11, 11), dpi=200)
+    fig = plt.figure(figsize=(10, 11), dpi=200)
 
     gs = gridspec.GridSpec(5, 1, height_ratios=[2, 1, 1, 1, 1])
     gs.update(wspace=0.05, hspace=0.045)
@@ -500,7 +504,7 @@ def getgroundweather(inlon,inlat,insource):
         lat) + LAT + '\n' + 'Model:' + grounddata['header']['model'] + ' Init time: ' + grounddata['header'][
                   'refTime'] + ' UTC', loc='left', fontsize=11)
     x = np.arange(1, len(Tdata) + 1, 1)
-    plt.ylabel('°C')
+    plt.ylabel('Temperature & dew(°C)')
     ax0.plot(x, Tdata, 'r-', label='Temperature')
     ax0.plot(x, dewdata, 'b-', label='Dew')
     for a, b in zip(x, Tdata):
@@ -510,16 +514,23 @@ def getgroundweather(inlon,inlat,insource):
     plt.grid(True)
 
     ax1 = plt.subplot(gs[1])
-    plt.ylabel('mm')
-    ax1.plot(x, pp, 'b-', label='Precipitation')
+    plt.ylabel('Rain/Snow(mm)')
+    ax1.bar(x, rain, color = 'b')
+    ax1.bar(x, snow, bottom = rain,  color='#AAAAAA')
     for a, b in zip(x, pp):
         plt.text(a, b + 0.05, '%.1f' % b, ha='center', va='bottom', fontsize=7)
+
+    if max(pp) < 5.0:
+        plt.ylim(0, 5)
+    else:
+        plt.ylim(0, max(pp) * 1.1)
+
     ax1.set_xticks([])
     plt.xticks(ticks, newdates, rotation=30)
     plt.grid(True)
 
     ax2 = plt.subplot(gs[2])
-    plt.ylabel('%')
+    plt.ylabel('Humidity(%)')
     ax2.plot(x, rh, 'g-', label='Humidity')
     for a, b in zip(x, rh):
         plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=7)
@@ -528,7 +539,7 @@ def getgroundweather(inlon,inlat,insource):
     plt.grid(True)
 
     ax3 = plt.subplot(gs[3])
-    plt.ylabel('m/s')
+    plt.ylabel('10m Wind(m/s)')
     ax3.plot(x, wind, 'r-', label='Wind')
     for a, b in zip(x, wind):
         plt.text(a, b + 0.05, '%.1f' % b, ha='center', va='bottom', fontsize=7)
@@ -536,9 +547,8 @@ def getgroundweather(inlon,inlat,insource):
     plt.xticks(ticks, newdates, rotation=30)
     plt.grid(True)
 
-
     ax4 = plt.subplot(gs[4])
-    plt.ylabel('hPa')
+    plt.ylabel('Pressure(hPa)')
     ax4.plot(x, Pdata, 'b-', label='Pressure')
     ax4.set_xticks([])
 
@@ -681,7 +691,6 @@ def getairrelated(inlon,inlat):
                 SWI.append(subSWI)
                 print('[analyze complete]-file: ' + file)
 
-
     fig = plt.figure(figsize=(10, 9), dpi=200)
 
     gs = gridspec.GridSpec(5, 1, height_ratios=[2, 1, 1, 1, 1])
@@ -755,6 +764,7 @@ for i in range(1,nargs):
 date = []
 HI = []
 LOW = []
+#getgroundweather(-79.40, 43.67, 'EC')
 #getweather(121.44, 31.25)
 #getverticalweather(lon, lat, source)
 if plottype == 'vertical':
