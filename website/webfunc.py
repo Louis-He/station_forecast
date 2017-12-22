@@ -55,6 +55,8 @@ class login:
         if (username, passwd) in allowed:
             i = web.input(access='True')
             web.setcookie('access', i.access, 600)
+            i = web.input(user=username)
+            web.setcookie('user', i.user, 600)
             return web.redirect('index')
         else:
             return web.redirect('logerror')
