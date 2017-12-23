@@ -12,6 +12,7 @@ urls = (
     '/GFSrain', 'GFSrain',
     '/GFSsurf', 'GFSsurf',
     '/GFS500', 'GFS500',
+    '/updatehistory', 'updatehistory'
     '/setcookie', 'CookieSet',
     '/getcookie', 'CookieGet'
 )
@@ -399,6 +400,13 @@ class success:
     def GET(self):
         if iscookie() == True:
             return open(r'success.html', 'r').read()
+        else:
+            return web.redirect('login')
+
+class updatehistory:
+    def GET(self):
+        if iscookie() == True:
+            return open(r'updatehistory.html', 'r').read()
         else:
             return web.redirect('login')
 
