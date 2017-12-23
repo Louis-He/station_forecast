@@ -258,6 +258,159 @@ def analyzedetailwindU(source,JSON):
     print('WU analyzed.')
     return [WU1000,WU950,WU900,WU850,WU800,WU750,WU700,WU650,WU600,WU550,WU500,WU450,WU400,WU350,WU300,WU250,WU200]
 
+def analyzealert(source,data):
+    # data: [lon, lat, T, dew, pp, snow, rain, pressure, wind, windgust, rh, ticks, newdates, reftime]
+    # analyze rain alert (blue: >10mm/3hr; yellow: >20mm/3hr; red: >50mm/3hr)
+    lon = data[0]
+    lat = data[1]
+    ticks = data[11]
+    newdates = data[12]
+
+    rainalert = []
+    for i in data[6]:
+        subindex = 0
+        if i >= 50.0:
+            subindex = 3
+        elif i >= 20.0:
+            subindex = 2
+        elif i >= 10.0:
+            subindex = 1
+        else:
+            subindex = 0
+        rainalert.append(subindex)
+
+    # analyze snow alert (blue: >2mm/3hr; yellow: >4mm/3hr; red: >8mm/3hr)
+    snowalert = []
+    for i in data[5]:
+        subindex = 0
+        if i >= 8.0:
+            subindex = 3
+        elif i >= 4.0:
+            subindex = 2
+        elif i >= 2.0:
+            subindex = 1
+        else:
+            subindex = 0
+        snowalert.append(subindex)
+
+    # analyze T alert (blue: >30C or < 0C; yellow: >35C or < -4C; red: >37C or < -8)
+    highTalert = []
+    lowTalert = []
+    for i in data[2]:
+        subindex = 0
+        if i >= 37.0:
+            subindex = 3
+        elif i >= 35.0:
+            subindex = 2
+        elif i >= 30.0:
+            subindex = 1
+        else:
+            subindex = 0
+        highTalert.append(subindex)
+
+    for i in data[2]:
+        subindex = 0
+        if i <= -8.0:
+            subindex = 3
+        elif i <= -4.0:
+            subindex = 2
+        elif i <= 0.0:
+            subindex = 1
+        else:
+            subindex = 0
+        lowTalert.append(subindex)
+
+    # analyze wind alert[gust] (blue: >10.8mm; yellow: >17.2; red: >24.5)
+    windalert = []
+    for i in data[8]:
+        subindex = 0
+        if i >= 24.5:
+            subindex = 3
+        elif i >= 17.2:
+            subindex = 2
+        elif i >= 10.8:
+            subindex = 1
+        else:
+            subindex = 0
+        windalert.append(subindex)
+
+    if lon < 0:
+        lon = -1 * lon
+        LON = 'W'
+    else:
+        LON = 'E'
+
+    if lat < 0:
+        lat = -1 * lat
+        LAT = 'S'
+    else:
+        LAT = 'N'
+
+    fig = plt.figure(figsize=(10, 11), dpi=200)
+
+    gs = gridspec.GridSpec(5, 1, height_ratios=[1, 1, 1, 1, 1])
+    gs.update(wspace=0.1, hspace=0.1)
+
+    ax0 = plt.subplot(gs[0])
+    plt.title('Weather variables Forecast @ Louis-He\n' + 'Forecast Location:' + str(lon) + LON + ', ' + str(
+        lat) + LAT + '\n' + 'Model:' + source + ' Init time: ' + data[13] + ' UTC', loc='left', fontsize=11)
+    x = np.arange(1, len(rainalert) + 1, 1)
+    plt.ylabel('Rainstorm Risk')
+    ax0.bar(x, rainalert, color='r')
+    for a, b in zip(x, rainalert):
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=7)
+    plt.ylim(0, 3)
+    ax0.set_xticks([])
+    plt.xticks(ticks, newdates, rotation=30)
+    plt.grid(True)
+
+    ax1 = plt.subplot(gs[1])
+    plt.ylabel('Snowstorm Risk')
+    ax1.bar(x, snowalert, color = 'r')
+    for a, b in zip(x, snowalert):
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=7)
+    plt.ylim(0, 3)
+    ax1.set_xticks([])
+    plt.xticks(ticks, newdates, rotation=30)
+    plt.grid(True)
+
+    ax2 = plt.subplot(gs[2])
+    plt.ylabel('Heatwave Risk')
+    ax2.bar(x, highTalert, color='r')
+    for a, b in zip(x, highTalert):
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=7)
+    plt.ylim(0, 3)
+    ax2.set_xticks([])
+    plt.xticks(ticks, newdates, rotation=30)
+    plt.grid(True)
+
+    ax3 = plt.subplot(gs[3])
+    plt.ylabel('Coldwave Risk')
+    ax3.bar(x, lowTalert, color='r')
+    for a, b in zip(x, lowTalert):
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=7)
+    plt.ylim(0, 3)
+    ax3.set_xticks([])
+    plt.xticks(ticks, newdates, rotation=30)
+    plt.grid(True)
+
+    ax4 = plt.subplot(gs[4])
+    plt.ylabel('Windy Risk')
+    ax4.bar(x, windalert, color='r')
+    for a, b in zip(x, windalert):
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=7)
+    plt.ylim(0, 3)
+    ax4.set_xticks([])
+    plt.xticks(ticks, newdates, rotation=30)
+    plt.grid(True)
+
+    plt.xticks(ticks, newdates, rotation=30)
+    plt.grid(True)
+
+    plt.savefig('website/static/images/A_' + source + '_' + str(lon) + LON + str(lat) + LAT +'.png')
+
+    return True
+
 def dailygraph():
     global date
     global HI
@@ -469,6 +622,7 @@ def getgroundweather(inlon,inlat,insource):
     rain = []
     pressure = grounddata['data']['pressure']
     wind = grounddata['data']['wind']
+    windgust = grounddata['data']['gust']
     rh = grounddata['data']['rh']
 
     Tdata = []
@@ -482,6 +636,11 @@ def getgroundweather(inlon,inlat,insource):
        Pdata.append(i / 100)
     for i in range(0,len(pp)):
         rain.append(pp[i] - snow[i])
+
+    # execute analyze automatic alert
+    analyzealert(insource, [lon, lat, Tdata, dew, pp, snow, rain, pressure, wind, windgust, rh, ticks, newdates, grounddata['header'][
+                  'refTime']])
+
 
     if lon < 0:
         lon = -1 * lon

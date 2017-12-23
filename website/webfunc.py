@@ -166,6 +166,8 @@ class product:
                     result += '<p>垂直剖面时序图（模式：' + model + '  坐标：'+ lon + ',' + lat +'）</p>'
                 elif type == 'G':
                     result += '<p>地面要素时序图（模式：' + model + '  坐标：' + lon + ',' + lat + '）</p>'
+                elif type == 'A':
+                    result += '<p>灾害天气风险预报图（模式：' + model + '  坐标：' + lon + ',' + lat + '）</p>'
                 result += '</div></div></div><div class="overlay"></div></div></div></div></div><!-- col-lg-4 -->'
 
                 if colcount == 2:
@@ -235,7 +237,7 @@ class GFSrain:
             for file in files:
                 #CNgfs.GFS2017121718.f120.png
                 fcst = file[file.find('.') + file[file.find('.')+1:].find('.') + 3 : file.find('.png') ]
-                print(fcst)
+                #print(fcst)
 
                 if fcst == downloadhour[count]:
                     finalfilelist.append(file)
@@ -295,7 +297,7 @@ class GFSsurf:
             for file in files:
                 #CNgfs.GFS2017121718.f120.png
                 fcst = file[file.find('.') + file[file.find('.')+1:].find('.') + 3 : file.find('.png') ]
-                print(fcst)
+                #print(fcst)
 
                 if fcst == downloadhour[count]:
                     finalfilelist.append(file)
@@ -355,7 +357,7 @@ class GFS500:
             for file in files:
                 #CNgfs.GFS2017121718.f120.png
                 fcst = file[file.find('.') + file[file.find('.')+1:].find('.') + 3 : file.find('.png') ]
-                print(fcst)
+                #print(fcst)
 
                 if fcst == downloadhour[count]:
                     finalfilelist.append(file)
