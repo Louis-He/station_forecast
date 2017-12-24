@@ -12,7 +12,7 @@ urls = (
     '/GFSrain', 'GFSrain',
     '/GFSsurf', 'GFSsurf',
     '/GFS500', 'GFS500',
-    '/updatehistory', 'updatehistory'
+    '/updatehistory', 'updatehistory',
     '/setcookie', 'CookieSet',
     '/getcookie', 'CookieGet'
 )
