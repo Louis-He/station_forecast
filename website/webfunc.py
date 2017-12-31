@@ -19,8 +19,7 @@ urls = (
 app = web.application(urls, globals())
 
 allowed = (
-    ('admin01','admin01'),
-	('user01','1liuxdyo'),
+    ('qxahz','Tybbs'),
     ('user02','123roxc8'),
     ('user03','wo8cnqw7'),
     ('user04','1huxe271'),
