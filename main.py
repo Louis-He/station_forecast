@@ -554,9 +554,9 @@ def getverticalweather(inlon,inlat,insource):
     ax0.clabel(CS, inline=1, fontsize=10, fmt='%.0f')
     ax0.invert_yaxis()
     ax0.contourf(X, Y, RHdata, cmap=cm.YlGnBu, norm=norm)
-    ax0.barbs(X, Y, WUdata, WVdata, length=4,
+    ax0.barbs(X, Y, WUdata, WVdata, length=6,
               sizes=dict(emptybarb=0, spacing=0.2, height=0.5), barb_increments=dict(half=2, full=4, flag=20),
-              linewidth=0.25, color='black')
+              linewidth=0.35, color='black')
     #ax0.set_xticks([])
     plt.xticks(ticks, newdates, rotation=30)
     ax0.set_xlim(1, count - 1)
@@ -566,7 +566,7 @@ def getverticalweather(inlon,inlat,insource):
     #ax2 = ax0.add_axes([0.92, 0.11, 0.018, 0.77])
     cbar = mpl.colorbar.ColorbarBase(ax1, cmap=cm.YlGnBu, norm=norm, orientation='vertical', drawedges=False)
     cbar.ax.set_ylabel('%', size=8)
-    cbar.set_ticks(np.linspace(0, 100, 20))
+    cbar.set_ticks(np.linspace(0, 100, 25))
     cbar.set_ticklabels(('0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'))
 
     '''
