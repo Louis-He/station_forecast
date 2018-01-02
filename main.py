@@ -566,7 +566,7 @@ def getverticalweather(inlon,inlat,insource):
     #ax2 = ax0.add_axes([0.92, 0.11, 0.018, 0.77])
     cbar = mpl.colorbar.ColorbarBase(ax1, cmap=cm.YlGnBu, norm=norm, orientation='vertical', drawedges=False)
     cbar.ax.set_ylabel('%', size=8)
-    cbar.set_ticks(np.linspace(0, 100, 10))
+    cbar.set_ticks(np.linspace(0, 100, 20))
     cbar.set_ticklabels(('0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'))
 
     '''
