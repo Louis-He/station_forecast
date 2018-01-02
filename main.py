@@ -8,6 +8,7 @@ import datetime
 import dateutil
 mpl.use('Agg')
 
+import color
 import os
 import math
 import pygrib
@@ -553,7 +554,8 @@ def getverticalweather(inlon,inlat,insource):
     norm = mpl.colors.Normalize(vmin=0, vmax=100)
     ax0.clabel(CS, inline=1, fontsize=10, fmt='%.0f')
     ax0.invert_yaxis()
-    ax0.contourf(X, Y, RHdata, cmap=cm.GnBu, norm=norm)
+    y1 = mpl.colors.LinearSegmentedColormap('my_colormap', color.rh, 256)
+    ax0.contourf(X, Y, RHdata, cmap=y1, norm=norm)
     ax0.barbs(X, Y, WUdata, WVdata, length=5,
               sizes=dict(emptybarb=0, spacing=0.2, height=0.5), barb_increments=dict(half=2, full=4, flag=20),
               linewidth=0.3, color='black')
@@ -564,7 +566,7 @@ def getverticalweather(inlon,inlat,insource):
 
     ax1 = plt.subplot(gs[1])
     #ax2 = ax0.add_axes([0.92, 0.11, 0.018, 0.77])
-    cbar = mpl.colorbar.ColorbarBase(ax1, cmap=cm.GnBu, norm=norm, orientation='vertical', drawedges=False)
+    cbar = mpl.colorbar.ColorbarBase(ax1, cmap=y1, norm=norm, orientation='vertical', drawedges=False)
     cbar.ax.set_ylabel('%', size=8)
     cbar.set_ticks(np.linspace(0, 100, 11))
     cbar.set_ticklabels(('0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'))
