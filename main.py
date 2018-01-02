@@ -548,7 +548,7 @@ def getverticalweather(inlon,inlat,insource):
                   'refTime'] + ' UTC', loc='left', fontsize=11)
     #ax0.add_axes([0.1, 0.1, 0.8, 0.78])
     levels = np.arange(-50, 35, 2)
-    CS = ax0.contour(X, Y, Tdata, levels, linewidths=0.35, colors='B')
+    CS = ax0.contour(X, Y, Tdata, levels, linewidths=0.35, colors='R')
     plt.ylabel('hpa')
     norm = mpl.colors.Normalize(vmin=0, vmax=100)
     ax0.clabel(CS, inline=1, fontsize=7, fmt='%.0f')
