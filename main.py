@@ -556,9 +556,9 @@ def getverticalweather(inlon,inlat,insource):
     ax0.invert_yaxis()
     y1 = mpl.colors.LinearSegmentedColormap('my_colormap', color.rh, 256)
     ax0.contourf(X, Y, RHdata, cmap=y1, norm=norm)
-    ax0.barbs(X, Y, WUdata, WVdata, length=5,
+    ax0.barbs(X, Y, WUdata, WVdata, length=4.5,
               sizes=dict(emptybarb=0, spacing=0.2, height=0.5), barb_increments=dict(half=2, full=4, flag=20),
-              linewidth=0.3, color='black')
+              linewidth=0.35, color='black')
     #ax0.set_xticks([])
     plt.xticks(ticks, newdates, rotation=30)
     ax0.set_xlim(1, count - 1)
