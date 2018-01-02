@@ -547,11 +547,11 @@ def getverticalweather(inlon,inlat,insource):
         lat) + LAT + '\n' + 'Model:' + iodata['header']['model'] + ' Init time: ' + iodata['header'][
                   'refTime'] + ' UTC', loc='left', fontsize=11)
     #ax0.add_axes([0.1, 0.1, 0.8, 0.78])
-    levels = np.arange(-50, 35, 2)
-    CS = ax0.contour(X, Y, Tdata, levels, linewidths=0.35, colors='R')
+    levels = np.arange(-52, 36, 4)
+    CS = ax0.contour(X, Y, Tdata, levels, linewidths=0.5, colors='R')
     plt.ylabel('hpa')
     norm = mpl.colors.Normalize(vmin=0, vmax=100)
-    ax0.clabel(CS, inline=1, fontsize=7, fmt='%.0f')
+    ax0.clabel(CS, inline=1, fontsize=10, fmt='%.0f')
     ax0.invert_yaxis()
     ax0.contourf(X, Y, RHdata, cmap=cm.YlGn, norm=norm)
     ax0.barbs(X, Y, WUdata, WVdata, length=4,
