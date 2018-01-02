@@ -19,10 +19,11 @@ urls = (
 app = web.application(urls, globals())
 
 allowed = (
-    ('qxahz','Tybbs'),
-    ('user02','123roxc8'),
-    ('user03','wo8cnqw7'),
-    ('user04','1huxe271'),
+    ('qxahz','Tybbs'),# Forever
+    ('user02','123roxc8'),# ~2017.02.02
+    ('user03','wo8cnqw7'),# ~2017.02.03
+    ('user04','1huxe271'),# ~2017.02.03
+    ('user05','sd7ar9d2')# ~2017.06.03
 )
 
 def iscookie():
