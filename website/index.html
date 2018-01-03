@@ -23,45 +23,6 @@
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-
-      <script type="text/javascript">
-        $(document).ready(function () {
-        var unique_id = $.gritter.add({
-            // (string | mandatory) the heading of the notification
-            title: '重要通知',
-            // (string | mandatory) the text inside the notification
-            text: '祝大家新年快乐！',
-            // (string | optional) the image to display on the left
-            image: 'static/assets/img/ui-sam.jpg',
-            // (bool | optional) if you want it to fade out on its own or just sit there
-            sticky: true,
-            // (int | optional) the time you want it to be alive for before fading out
-            time: '',
-            // (string | optional) the class name you want to apply to that specific message
-            class_name: 'my-sticky-class'
-        });
-
-        var username = getCookie["username"];
-
-        return false;
-        });
-
-        function getCookie(cookieName){
-            var cookieObj={},
-                cookieSplit=[],
-                // 以分号（;）分组
-                cookieArr=document.cookie.split(";");
-            for(var i=0,len=cookieArr.length;i<len;i++)
-                if(cookieArr[i]) {
-                    // 以等号（=）分组
-                    cookieSplit=cookieArr[i].split("=");
-                    // Trim() 是自定义的函数，用来删除字符串两边的空格
-                    cookieObj[cookieSplit[0].Trim()]=cookieSplit[1].Trim();
-                }
-            return cookieObj[cookieName];
-        }
-
-	    </script>
     <![endif]-->
   </head>
 
@@ -100,7 +61,19 @@
               <ul class="sidebar-menu" id="nav-accordion">
 
               	  <p class="centered"><img src="static/assets/img/ui-sam.jpg" class="img-circle" width="60"></p>
-              	  <h5 class="centered">欢迎登陆,<script>document.write(username);</script></h5>
+              	  <h5 class="centered">欢迎登陆,<script type="text/javascript">
+                    var cookie = {
+                        get:function(str){
+                            var cookies = {};
+                            document.cookies.split(';').forEach(function(item){
+                                var c = item.split('=');
+                                cookies[c[0]]=c[1];
+                            });
+                            return cookies[str] || "";
+                        }
+                    }
+                    document.querySelector("#user").innerHTML = cookie.get("username");
+                    </script></h5>
 
                   <li class="mt">
                       <a class="active" href="index">
@@ -256,6 +229,44 @@
     <script type="text/javascript" src="static/assets/js/gritter/js/jquery.gritter.js"></script>
     <script type="text/javascript" src="static/assets/js/gritter-conf.js"></script>
     <!--script for this page-->
+  <script type="text/javascript">
+        $(document).ready(function () {
+        var unique_id = $.gritter.add({
+            // (string | mandatory) the heading of the notification
+            title: '重要通知',
+            // (string | mandatory) the text inside the notification
+            text: '祝大家新年快乐！',
+            // (string | optional) the image to display on the left
+            image: 'static/assets/img/ui-sam.jpg',
+            // (bool | optional) if you want it to fade out on its own or just sit there
+            sticky: true,
+            // (int | optional) the time you want it to be alive for before fading out
+            time: '',
+            // (string | optional) the class name you want to apply to that specific message
+            class_name: 'my-sticky-class'
+        });
+
+        var username = getCookie["username"];
+
+        return false;
+        });
+
+        function getCookie(cookieName){
+            var cookieObj={},
+                cookieSplit=[],
+                // 以分号（;）分组
+                cookieArr=document.cookie.split(";");
+            for(var i=0,len=cookieArr.length;i<len;i++)
+                if(cookieArr[i]) {
+                    // 以等号（=）分组
+                    cookieSplit=cookieArr[i].split("=");
+                    // Trim() 是自定义的函数，用来删除字符串两边的空格
+                    cookieObj[cookieSplit[0].Trim()]=cookieSplit[1].Trim();
+                }
+            return cookieObj[cookieName];
+        }
+
+	</script>
 
   <script>
       //custom select box
