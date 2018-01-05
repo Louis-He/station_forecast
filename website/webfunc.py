@@ -25,7 +25,8 @@ allowed = (
     ('user04','1huxe271'),# ~2017.02.03
     ('user05','sd7ar9d2'),# ~2017.06.03
     ('user06','sa675scz'),# ~2017.02.03
-    ('zgqx','zgqx2017')# ~2017.01.05
+    ('user07','a8sd979a'),# ~2017.02.05
+    ('user08','sd8f7sf9')# ~2017.02.05
 )
 
 def iscookie():
@@ -429,4 +430,3 @@ if __name__ == "__main__":
     f = open('waitlistmission.sh', 'w+')
     f.close()
     app.run()
-

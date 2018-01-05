@@ -62,17 +62,22 @@
 
               	  <p class="centered"><img src="static/assets/img/ui-sam.jpg" class="img-circle" width="60"></p>
               	  <h5 class="centered">欢迎登陆,<script type="text/javascript">
-                    var cookie = {
-                        get:function(str){
-                            var cookies = {};
-                            document.cookies.split(';').forEach(function(item){
-                                var c = item.split('=');
-                                cookies[c[0]]=c[1];
-                            });
-                            return cookies[str] || "";
+                    //js获取cookie
+                    var acookie=document.cookie.split("; ");
+                    function getck(sname)
+                        {//获取单个cookies
+                            for(var i=0;i<acookie.length;i++){
+                            var arr=acookie[i].split("=");
+                            if(sname==arr[0]){
+                                if(arr.length>1)
+                                return unescape(arr[1]);
+                                else
+                                return "";
+                            }}
+                            return "";
                         }
-                    }
-                    document.querySelector("#user").innerHTML = cookie.get("user");
+                    //给相应的form里的input赋值
+                    document.form_name.input_name.value=getck("user");
                     </script></h5>
 
                   <li class="mt">
