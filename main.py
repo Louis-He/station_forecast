@@ -916,10 +916,12 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     grbs = pygrib.open('/root/GFS/rawfile/' + filetime)
     # extract data from grib file
     if color[:4] == 'T_2m':
+        colorlabel = 'Temperature(℃)'
         name += '2m Temperature'
         C = grbs.select(name='2 metre temperature')[0].values
         C = C - 273.15
     elif color[:1] == 'T':
+        colorlabel = 'Temperature(℃)'
         grb = grbs.select(name='Temperature')
         if color[2:] == '925':
             name += '925hPa Temperature'
@@ -941,6 +943,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             C = grb[10].values
         C = C - 273.15
     elif color[:5] == 'W_10m':
+        colorlabel = 'Wind(m/s)'
         print ("hsw is lkx's pet pig.\n")
         name += '10m Wind Speed'
         C1 = grbs.select(name='10 metre U wind component')[0]
@@ -948,6 +951,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         C = np.power(np.power(C1.values, 2) + np.power(C2.values, 2), 1/2)
         del C1, C2
     elif color[:1] == 'W':
+        colorlabel = 'Wind(m/s)'
         grb1 = grbs.select(name='U component of wind')
         grb2 = grbs.select(name='V component of wind')
         if color[2:] == '925':
@@ -1017,7 +1021,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     tmpstr = 'cmap_user=plt.cm.' + contourfcolor
     ldict = locals()
     exec(tmpstr, globals(), ldict)
-    boundary = ldict['boundary']
+    cmap_user = ldict['cmap_user']
     m.contourf(x, y, C, 20, cmap = cmap_user, norm = norm)  # ,norm=norm cmaps.temp_19lev NCV_jaisnd
     #d = m.contour(x, y, subT, 110, colors='red', linewidths=0.6, levels=0)
     #d1 = m.contour(x, y, subMSLP, 70, colors='whitesmoke', linewidths=0.5)  # , alpha=0.6
