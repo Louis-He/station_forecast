@@ -895,15 +895,13 @@ def getairrelated(inlon,inlat):
     print('Air related plot complete')
     return True
 
-def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
+def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     # color: (T)T_2m, T_925, T_850, T_700, T_500, T_200, T_100
     # color: (W)W_10m, Wind_925, Wind_850, Wind_500, Wind_200, Wind_100, Gust_10m
     # color: (G)G_925, GPH_850, GPH_700, GPH_500, GPH_200, GPH_100
     # color: (R)R_2m, RH_925, RH_850, RH_700, RH_500, RH_200, RH_100
     # color: Haines Index, MSLP, Surface lifted index:K, Precipitable water, Total Cloud Cover, Convective available potential energy
     name = ''
-
-    areatype = 'CN'
 
     # plot the diagram of selected element
     # set boundary through areatype
@@ -1032,6 +1030,10 @@ def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
             sizes=dict(emptybarb=0, spacing=0.2, height=0.5), barb_increments=dict(half=2, full=4, flag=20),
             linewidth=0.2, color='black')
     '''
+    # additional geoinfomation
+    if areatype == 'CN':
+        m.readshapefile('/geo/cnhimap', 'states', drawbounds=True, linewidth=0.5, color='black')
+
 
     plt.title('GFS' + name + '\nlnit:' + formatfcit + ' Forecast Hour[' + str(
         fcst) + '] valid at ' + formatvalid + '\n@myyd & Louis-He',
@@ -1111,6 +1113,10 @@ for i in range(1,nargs):
           if i != nargs - 1:
               contourcolor = sys.argv[i + 1]
               skip = True
+      elif arg == "--area":
+          if i != nargs - 1:
+              area = sys.argv[i + 1]
+              skip = True
       else:
          print ("ERR: unknown arg:",arg)
    else:
@@ -1129,7 +1135,7 @@ elif plottype == 'ground':
 elif plottype == 'air':
     getairrelated(lon, lat)
 elif plottype == 'map':
-    plotmap(filetime, contourf, contour, barb, contourfcolor, contourcolor)
+    plotmap(filetime, area, contourf, contour, barb, contourfcolor, contourcolor)
 '''
 sched = BlockingScheduler()
 sched.add_job(getweather, 'interval', seconds = 3 * 60 * 60)
