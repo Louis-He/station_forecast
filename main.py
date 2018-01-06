@@ -977,23 +977,22 @@ def plotmap(time, color, line, barb, contourfcolor, linecolor):
         C = np.power(np.power(C1.values, 2) + np.power(C2.values, 2), 1 / 2)
         del C1, C2
 
-
     # define longitude and latitude
-    sample = grbs.select(name='2 metre temperature')[0]
-    lats, lons = sample.latlons()
+    Temperature = grbs.select(name='Temperature')[25]
+    lats, lons = Temperature.latlons()
     lats = (lats.T)[0]
     lons = lons[0]
 
     # define the initial forecast hour
-    analysistime = sample.analDate
+    analysistime = Temperature.analDate
     fcit = analysistime.timetuple()  # time.struct_time
     formatfcit = time.strftime('%Hz %m %d %Y', fcit)  # formatted initial time
     timestampfcit = time.mktime(fcit)  # timestamp of initial time
 
-    fcst = sample.forecastTime  # integer
+    fcst = Temperature.forecastTime  # integer
     formatvalid = time.strftime('%Hz %m %d %Y',
                                 time.localtime(timestampfcit + fcst * 60 * 60))  # formatted validtime
-
+    del Temperature
 
     # generatre basemap
     m = Basemap(llcrnrlon=boundary[0], llcrnrlat=boundary[1], urcrnrlon=boundary[2], urcrnrlat=boundary[3],
