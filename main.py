@@ -1082,7 +1082,7 @@ for i in range(1,nargs):
               skip = True
       elif arg == "--time":
           if i != nargs - 1:
-              time = sys.argv[i + 1]
+              filetime = sys.argv[i + 1]
               skip = True
       elif arg == "--contourf":
           if i != nargs - 1:
@@ -1122,7 +1122,7 @@ elif plottype == 'ground':
 elif plottype == 'air':
     getairrelated(lon, lat)
 elif plottype == 'map':
-    plotmap(time, contourf, contour, barb, contourfcolor, contourcolor)
+    plotmap(filetime, contourf, contour, barb, contourfcolor, contourcolor)
 '''
 sched = BlockingScheduler()
 sched.add_job(getweather, 'interval', seconds = 3 * 60 * 60)
