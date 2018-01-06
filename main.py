@@ -1032,7 +1032,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     '''
     # additional geoinfomation
     if areatype == 'CN':
-        m.readshapefile('/geo/cnhimap', 'states', drawbounds=True, linewidth=0.5, color='black')
+        m.readshapefile('geo/cnhimap', 'states', drawbounds=True, linewidth=0.5, color='black')
 
 
     plt.title('GFS' + name + '\nlnit:' + formatfcit + ' Forecast Hour[' + str(
