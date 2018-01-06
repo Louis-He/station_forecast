@@ -903,7 +903,6 @@ def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
     # color: Haines Index, MSLP, Surface lifted index:K, Precipitable water, Total Cloud Cover, Convective available potential energy
     name = ''
 
-    ys = plt.get_cmap(contourfcolor)
     areatype = 'CN'
 
     # plot the diagram of selected element
@@ -1009,11 +1008,16 @@ def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
 
     # generate legend
 
-    my_cmap = mpl.colors.LinearSegmentedColormap('my_colormap', ys, 256)
-    norm = mpl.colors.Normalize(-60, 50)
+    #norm = mpl.colors.Normalize(-60, 50)
 
     # c=plt.contourf(x, y, rt, 750, cmap=my_cmap, norm=norm)
-    m.contourf(x, y, C, 110, cmap=my_cmap, norm=norm)  # ,norm=norm cmaps.temp_19lev NCV_jaisnd
+    cmap_user = plt.cm.bwr
+    boundary = ''
+    tmpstr = 'cmap_user=plt.cm.' + contourfcolor
+    ldict = locals()
+    exec(tmpstr, globals(), ldict)
+    boundary = ldict['boundary']
+    m.contourf(x, y, C, 110, cmap = cmap_user)  # ,norm=norm cmaps.temp_19lev NCV_jaisnd
     #d = m.contour(x, y, subT, 110, colors='red', linewidths=0.6, levels=0)
     #d1 = m.contour(x, y, subMSLP, 70, colors='whitesmoke', linewidths=0.5)  # , alpha=0.6
     #plt.clabel(d, inline=True, fmt='%.0f', fontsize=2)
@@ -1038,7 +1042,7 @@ def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
     m.drawstates(linewidth=0.4, color='dimgrey')
     # m.readshapefile('/mnt/c/Users/10678/Desktop/GFS/shp/cnhimap', 'states', drawbounds=True, linewidth=0.5, color='black')
     ax2 = fig.add_axes([0.88, 0.11, 0.018, 0.77])
-    cbar = mpl.colorbar.ColorbarBase(ax2, cmap=my_cmap, norm=norm, orientation='vertical', drawedges=False)
+    cbar = mpl.colorbar.ColorbarBase(ax2, cmap=cmap_user, orientation='vertical', drawedges=False)
     cbar.set_ticks(np.linspace(-60, 50, 23))
     cbar.ax.set_ylabel('Temperature(℃)', size=8)  # Temperature(℃)
     cbar.ax.tick_params(labelsize=8)
@@ -1052,7 +1056,7 @@ def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
     plt.cla
     plt.clf()
     plt.close(0)
-    del m, lon, lat, lons, lats, my_cmap, norm, cbar, ax, ax2, x, y, skip, analysistime, fcit, formatfcit, timestampfcit, fcst, formatvalid
+    del m, lon, lat, lons, lats, cbar, ax, ax2, x, y, skip, analysistime, fcit, formatfcit, timestampfcit, fcst, formatvalid
 
 
     return False
