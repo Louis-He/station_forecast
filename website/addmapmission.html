@@ -1,10 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+
+    <title>在线预报图制作系统</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="static/assets/css/bootstrap.css" rel="stylesheet">
+    <!--external css-->
+    <link href="static/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="static/assets/css/style.css" rel="stylesheet">
+    <link href="static/assets/css/style-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+  <section id="container" >
+      <!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+      <!--header start-->
+      <header class="header black-bg">
+              <div class="sidebar-toggle-box">
+                  <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+              </div>
+            <!--logo start-->
+            <a href="index" class="logo"><b>在线预报图制作系统</b></a>
+            <!--logo end-->
+            <div class="nav notify-row" id="top_menu">
+
+            </div>
+            <div class="top-menu">
+            	<ul class="nav pull-right top-menu">
+                    <li><a class="logout" href="/logout">Logout</a></li>
+            	</ul>
+            </div>
+        </header>
+      <!--header end-->
+
+      <!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu" id="nav-accordion">
+
+              	  <p class="centered"><img src="static/assets/img/ui-sam.jpg" class="img-circle" width="60"></p>
+              	  <h5 class="centered">欢迎登陆</h5>
+
+                  <li class="mt">
+                      <a href="index">
+                          <i class="fa fa-dashboard"></i>
+                          <span>首页</span>
+                      </a>
+                  </li>
+
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-book"></i>
+                          <span>GFS预报模型</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a href="GFSrain">降水量</a></li>
+                          <li><a href="GFS500">500hpa高空要素</a></li>
+                          <li><a href="GFSsurf">地面要素</a></li>
+                      </ul>
+                  </li>
+
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-book"></i>
+                          <span>制图任务</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="product">完成任务</a></li>
+                          <li><a  href="missionlist">任务进程</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a class="active" href="javascript:;" >
+                          <i class="fa fa-tasks"></i>
+                          <span>任务管理</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a href="addmission">添加单站任务</a></li>
+                          <li class="active"><a href="addmapmission">添加区域任务</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a href="updatehistory">
+                          <i class="fa fa-dashboard"></i>
+                          <span>更新日志</span>
+                      </a>
+                  </li>
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+      <!--sidebar end-->
+
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+          	<h3><i class="fa fa-angle-right"></i>添加任务</h3>
+
+              <!-- worklist request -->
+          	<div class="row mt">
+          		<div class="col-lg-12">
+                  <div class="form-panel">
+                  	  <h4 class="mb"><i class="fa fa-angle-right"></i> 区域预报图任务请求 </h4>
+                      <form action="#" class="form-horizontal style-form" method="post">
+
+                          <!--<hr>!-->
+                          <h5>1.选择预报图区域：</h5>
+                          <div class="radio">
+						  <label>
+                              <input type="radio" name="area" id="option1" value="CN" checked>
+                              中国地区
+						  </label>
+                          </div>
+                          <div class="radio">
+                          <label>
+                              <input type="radio" name="area" id="option2" value="East_NA">
+                              北美东北部
+                          </label>
+                          </div>
+
+                          <hr>
+
+                          <h5>2.选择填色方案：</h5>
+                          <select name="contourf" class="form-control">
+                              <optgroup label="温度">
+						    <option value="T_2m">2m气温</option>
+						    <option value="T_925">925hPa温度</option>
+						    <option value="T_850">850hPa温度</option>
+						    <option value="T_700">700hPa温度</option>
+						    <option value="T_500">500hPa温度</option>
+                            <option value="T_200">200hPa温度</option>
+                            <option value="T_100">100hPa温度</option>
+                                  </optgroup>
+                               <optgroup label="风速">
+                            <option value="W_10m">10m风</option>
+						    <option value="W_925">925hPa风</option>
+						    <option value="W_850">850hPa风</option>
+						    <option value="W_700">700hPa风</option>
+						    <option value="W_500">500hPa风</option>
+                            <option value="W_200">200hPa风</option>
+                            <option value="W_100">100hPa风</option>
+                                   </optgroup>
+						  </select>
+
+                          <hr>
+
+                          <h5>3.选择等值线色阶：</h5>
+                          <select name="contourfcolor" class="form-control">
+						    <option value="PiYG">PiYG红白绿</option>
+						    <option value="PRGn">PRGn紫白绿</option>
+						    <option value="BrBG">BrBG棕白蓝绿</option>
+						    <option value="PuOr">PuOr棕橙白紫</option>
+						    <option value="RdGy">RdGy红白黑</option>
+                            <option value="RdBu">RdBu红白蓝</option>
+                            <option value="PiYG">100hPa温度</option>
+						  </select>
+
+                          <hr>
+
+                          <!--
+                          <h5>4.选择等值线方案：</h5>
+                          <select name="products[]" class="form-control">
+						    <option>2m气温</option>
+						    <option>925hPa温度</option>
+						    <option>850hPa温度</option>
+						    <option>700hPa温度</option>
+						    <option>500hPa温度</option>
+                            <option>200hPa温度</option>
+                            <option>100hPa温度</option>
+						  </select>
+
+                          !-->
+
+                          <hr>
+
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Longitude</label>
+                              <div class="col-sm-10">
+                                  <input type="text" name="lon" class="form-control" placeholder="例如:121.25/-79.40 (必须是小数)" required="">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Latitude</label>
+                              <div class="col-sm-10">
+                                  <input type="text" name="lat" class="form-control" placeholder="例如:31.45/43.67 (必须是小数)" required="">
+                              </div>
+                          </div>
+                          <button type="submit" class="btn btn-theme">提交请求</button>
+                      </form>
+                  </div>
+          		</div><!-- col-lg-12-->
+          	</div><!-- /row -->
+
+
+		</section><!--/wrapper -->
+      </section><!-- /MAIN CONTENT -->
+
+      <!--main content end-->
+      <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              2017 - 在线预报图制作系统</a> - <a href="https://github.com/Louis-He" title="Louis-He Github" target="_blank">@Louis-He</a>
+          </div>
+      </footer>
+      <!--footer end-->
+  </section>
+
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="static/assets/js/jquery.js"></script>
+    <script src="static/assets/js/bootstrap.min.js"></script>
+    <script src="static/assets/js/jquery-ui-1.9.2.custom.min.js"></script>
+    <script src="static/assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script class="include" type="text/javascript" src="static/assets/js/jquery.dcjqaccordion.2.7.js"></script>
+    <script src="static/assets/js/jquery.scrollTo.min.js"></script>
+    <script src="static/assets/js/jquery.nicescroll.js" type="text/javascript"></script>
+
+
+    <!--common script for all pages-->
+    <script src="static/assets/js/common-scripts.js"></script>
+
+    <!--script for this page-->
+
+  <script>
+      //custom select box
+
+      $(function(){
+          $('select.styled').customSelect();
+      });
+
+  </script>
+
+  </body>
 </html>

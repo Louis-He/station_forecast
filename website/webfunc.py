@@ -7,6 +7,7 @@ urls = (
     '/logerror', 'logerror',
     '/missionlist', 'missionlist',
     '/product', 'product',
+    '/addmapmission', 'addmapmission',
     '/addmission', 'addmission',
     '/success', 'success',
     '/GFSrain', 'GFSrain',
@@ -193,6 +194,39 @@ class addmission:
         print('PROCESS GET method')
         if iscookie()==True:
             return open(r'addmission.html', 'r').read()
+        else:
+            return web.redirect('login')
+
+    def POST(self):
+        print('PROCESS POST method')
+        try:
+            print(web.input())
+        except:
+            print('web input ERROR!!!!')
+        i = web.input()
+
+        try:
+            lon = i.get('lon')
+            lat = i.get('lat')
+            source = i.get('optionsRadios')
+            plottype = i.get('plottype')
+            print('!![LON]!!' + lon)
+            print('!![LAT]!!' + lat)
+            print('!![SOURCE]!!' + source)
+            print('!![PLOT_TYPE]!!' + plottype)
+            f = open('waitlistmission.sh', 'a+')
+            f.write('python3 main.py --lon ' + lon + ' --lat ' + lat + ' --source ' + source + ' --type ' + plottype + '\n')
+            print('!![PRCOESS]!!')
+            f.close()
+            return web.redirect('success')
+        except:
+            print('ERROR')
+
+class addmapmission:
+    def GET(self):
+        print('PROCESS GET method')
+        if iscookie()==True:
+            return open(r'addmapmission.html', 'r').read()
         else:
             return web.redirect('login')
 
