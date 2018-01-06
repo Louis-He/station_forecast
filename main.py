@@ -920,6 +920,7 @@ def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
     if color[:1] == 'T_2m':
         name += '2m Temperature'
         C = grbs.select(name='2 metre temperature')[0].values
+        C = C - 273.15
     elif color[:1] == 'T':
         grb = grbs.select(name='Temperature')
         if color[2:] == '925':
@@ -940,6 +941,7 @@ def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
         if color[2:] == '100':
             name += '100hPa Temperature'
             C = grb[10].values
+        C = C - 273.15
     elif color[:1] == 'W_10m':
         name += '10m Wind Speed'
         C1 = grbs.select(name='10 metre U wind component')[0]
