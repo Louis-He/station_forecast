@@ -920,32 +920,32 @@ def plotmap(time, color, line, barb, contourfcolor, linecolor):
     # extract data from grib file
     if color[:1] == 'T_2m':
         name += '2m Temperature'
-        C = grbs.select(name='2 metre temperature')[0].value
+        C = grbs.select(name='2 metre temperature')[0].values
     elif color[:1] == 'T':
         grb = grbs.select(name='Temperature')
         if color[2:] == '925':
             name += '925hPa Temperature'
-            C = grb[27].value
+            C = grb[27].values
         if color[2:] == '850':
             name += '850hPa Temperature'
-            C = grb[25].value
+            C = grb[25].values
         if color[2:] == '700':
             name += '700hPa Temperature'
-            C = grb[22].value
+            C = grb[22].values
         if color[2:] == '500':
             name += '500hPa Temperature'
-            C = grb[18].value
+            C = grb[18].values
         if color[2:] == '200':
             name += '200hPa Temperature'
-            C = grb[12].value
+            C = grb[12].values
         if color[2:] == '100':
             name += '100hPa Temperature'
-            C = grb[10].value
+            C = grb[10].values
     elif color[:1] == 'W_10m':
         name += '10m Wind Speed'
         C1 = grbs.select(name='10 metre U wind component')[0]
         C2 = grbs.select(name='10 metre V wind component')[0]
-        C = np.power(np.power(C1.value, 2) + np.power(C2.value, 2), 1/2)
+        C = np.power(np.power(C1.values, 2) + np.power(C2.values, 2), 1/2)
         del C1, C2
     elif color[:1] == 'W':
         grb1 = grbs.select(name='U component of wind')
@@ -974,7 +974,7 @@ def plotmap(time, color, line, barb, contourfcolor, linecolor):
             name += '100hPa Wind Speed'
             C1 = grb1[11]
             C2 = grb2[11]
-        C = np.power(np.power(C1.value, 2) + np.power(C2.value, 2), 1 / 2)
+        C = np.power(np.power(C1.values, 2) + np.power(C2.values, 2), 1 / 2)
         del C1, C2
 
 
