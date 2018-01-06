@@ -1056,7 +1056,7 @@ def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
     plt.cla
     plt.clf()
     plt.close(0)
-    del m, lon, lat, lons, lats, cbar, ax, ax2, x, y, skip, analysistime, fcit, formatfcit, timestampfcit, fcst, formatvalid
+    del m, lon, lat, lons, lats, cbar, ax, ax2, x, y, analysistime, fcit, formatfcit, timestampfcit, fcst, formatvalid
 
 
     return False
