@@ -915,7 +915,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     # read in files
     grbs = pygrib.open('/root/GFS/rawfile/' + filetime)
     # extract data from grib file
-    if color[:1] == 'T_2m':
+    if color[:4] == 'T_2m':
         name += '2m Temperature'
         C = grbs.select(name='2 metre temperature')[0].values
         C = C - 273.15
@@ -940,7 +940,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             name += '100hPa Temperature'
             C = grb[10].values
         C = C - 273.15
-    elif color[:1] == 'W_10m':
+    elif color[:5] == 'W_10m':
         name += '10m Wind Speed'
         C1 = grbs.select(name='10 metre U wind component')[0]
         C2 = grbs.select(name='10 metre V wind component')[0]
