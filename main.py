@@ -1008,7 +1008,7 @@ def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
 
     # generate legend
 
-    #norm = mpl.colors.Normalize(-60, 50)
+    norm = mpl.colors.Normalize(int(C.min()), int(C.max()))
 
     # c=plt.contourf(x, y, rt, 750, cmap=my_cmap, norm=norm)
     cmap_user = plt.cm.bwr
@@ -1017,7 +1017,7 @@ def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
     ldict = locals()
     exec(tmpstr, globals(), ldict)
     boundary = ldict['boundary']
-    m.contourf(x, y, C, 110, cmap = cmap_user)  # ,norm=norm cmaps.temp_19lev NCV_jaisnd
+    m.contourf(x, y, C, 20, cmap = cmap_user, norm = norm)  # ,norm=norm cmaps.temp_19lev NCV_jaisnd
     #d = m.contour(x, y, subT, 110, colors='red', linewidths=0.6, levels=0)
     #d1 = m.contour(x, y, subMSLP, 70, colors='whitesmoke', linewidths=0.5)  # , alpha=0.6
     #plt.clabel(d, inline=True, fmt='%.0f', fontsize=2)
@@ -1042,8 +1042,8 @@ def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
     m.drawstates(linewidth=0.4, color='dimgrey')
     # m.readshapefile('/mnt/c/Users/10678/Desktop/GFS/shp/cnhimap', 'states', drawbounds=True, linewidth=0.5, color='black')
     ax2 = fig.add_axes([0.88, 0.11, 0.018, 0.77])
-    cbar = mpl.colorbar.ColorbarBase(ax2, cmap=cmap_user, orientation='vertical', drawedges=False)
-    cbar.set_ticks(np.linspace(-60, 50, 23))
+    cbar = mpl.colorbar.ColorbarBase(ax2, cmap=cmap_user, norm=norm, orientation='vertical', drawedges=False)
+    cbar.set_ticks(np.linspace(int(C.min), int(C.max), 20))
     cbar.ax.set_ylabel('Temperature(℃)', size=8)  # Temperature(℃)
     cbar.ax.tick_params(labelsize=8)
     # Temperature(℃)
