@@ -26,7 +26,7 @@ allowed = (
     ('user05','sd7ar9d2'),# ~2017.06.03
     ('user06','sa675scz'),# ~2017.02.03
     ('user07','a8sd979a'),# ~2017.02.05
-    ('user08','sd8f7sf9')# ~2017.02.05
+    ('user08','sd8f7sf9')# ~2017.02.05[NOT USED]
 )
 
 def iscookie():

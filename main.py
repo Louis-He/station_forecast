@@ -9,6 +9,7 @@ import dateutil
 mpl.use('Agg')
 
 import color
+from area import *
 import os
 import math
 import pygrib
@@ -19,6 +20,7 @@ import matplotlib.cm as cm
 import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator, FuncFormatter
+from mpl_toolkits.basemap import Basemap, cm, shiftgrid
 from matplotlib import gridspec
 from matplotlib import ticker, dates
 import time
@@ -893,6 +895,168 @@ def getairrelated(inlon,inlat):
     print('Air related plot complete')
     return True
 
+def plotmap(time, color, line, barb, contourfcolor, linecolor):
+    # color: (T)T_2m, T_925, T_850, T_700, T_500, T_200, T_100
+    # color: (W)W_10m, Wind_925, Wind_850, Wind_500, Wind_200, Wind_100, Gust_10m
+    # color: (G)G_925, GPH_850, GPH_700, GPH_500, GPH_200, GPH_100
+    # color: (R)R_2m, RH_925, RH_850, RH_700, RH_500, RH_200, RH_100
+    # color: Haines Index, MSLP, Surface lifted index:K, Precipitable water, Total Cloud Cover, Convective available potential energy
+    name = ''
+
+    ys = plt.get_cmap(contourfcolor)
+    areatype = 'CN'
+
+    # plot the diagram of selected element
+    # set boundary through areatype
+    boundary = ''
+    tmpstr = 'boundary=' + areatype
+    ldict = locals()
+    exec(tmpstr, globals(), ldict)
+    boundary = ldict['boundary']
+    # print(boundary)
+
+    # read in files
+    grbs = pygrib.open('root/GFS/rawfile/' + time)
+    # extract data from grib file
+    if color[:1] == 'T_2m':
+        name += '2m Temperature'
+        C = grbs.select(name='2 metre temperature')[0].value
+    elif color[:1] == 'T':
+        grb = grbs.select(name='Temperature')
+        if color[2:] == '925':
+            name += '925hPa Temperature'
+            C = grb[27].value
+        if color[2:] == '850':
+            name += '850hPa Temperature'
+            C = grb[25].value
+        if color[2:] == '700':
+            name += '700hPa Temperature'
+            C = grb[22].value
+        if color[2:] == '500':
+            name += '500hPa Temperature'
+            C = grb[18].value
+        if color[2:] == '200':
+            name += '200hPa Temperature'
+            C = grb[12].value
+        if color[2:] == '100':
+            name += '100hPa Temperature'
+            C = grb[10].value
+    elif color[:1] == 'W_10m':
+        name += '10m Wind Speed'
+        C1 = grbs.select(name='10 metre U wind component')[0]
+        C2 = grbs.select(name='10 metre V wind component')[0]
+        C = np.power(np.power(C1.value, 2) + np.power(C2.value, 2), 1/2)
+        del C1, C2
+    elif color[:1] == 'W':
+        grb1 = grbs.select(name='U component of wind')
+        grb2 = grbs.select(name='V component of wind')
+        if color[2:] == '925':
+            name += '925hPa Wind Speed'
+            C1 = grb1[28]
+            C2 = grb2[28]
+        if color[2:] == '850':
+            name += '850hPa Wind Speed'
+            C1 = grb1[26]
+            C2 = grb2[26]
+        if color[2:] == '700':
+            name += '700hPa Wind Speed'
+            C1 = grb1[23]
+            C2 = grb2[23]
+        if color[2:] == '500':
+            name += '500hPa Wind Speed'
+            C1 = grb1[19]
+            C2 = grb2[19]
+        if color[2:] == '200':
+            name += '200hPa Wind Speed'
+            C1 = grb1[13]
+            C2 = grb2[13]
+        if color[2:] == '100':
+            name += '100hPa Wind Speed'
+            C1 = grb1[11]
+            C2 = grb2[11]
+        C = np.power(np.power(C1.value, 2) + np.power(C2.value, 2), 1 / 2)
+        del C1, C2
+
+
+    # define longitude and latitude
+    sample = grbs.select(name='2 metre temperature')[0]
+    lats, lons = sample.latlons()
+    lats = (lats.T)[0]
+    lons = lons[0]
+
+    # define the initial forecast hour
+    analysistime = sample.analDate
+    fcit = analysistime.timetuple()  # time.struct_time
+    formatfcit = time.strftime('%Hz %m %d %Y', fcit)  # formatted initial time
+    timestampfcit = time.mktime(fcit)  # timestamp of initial time
+
+    fcst = sample.forecastTime  # integer
+    formatvalid = time.strftime('%Hz %m %d %Y',
+                                time.localtime(timestampfcit + fcst * 60 * 60))  # formatted validtime
+
+
+    # generatre basemap
+    m = Basemap(llcrnrlon=boundary[0], llcrnrlat=boundary[1], urcrnrlon=boundary[2], urcrnrlat=boundary[3],
+                projection='lcc', lat_0=boundary[4], lon_0=boundary[5], resolution='l', area_thresh=100)
+    lon, lat = np.meshgrid(lons, lats)
+    x, y = m(lon, lat)
+
+    fig = plt.figure(figsize=(10, 7), dpi=150)
+    ax = plt.gca()
+    ax.spines['right'].set_color('none')
+    ax.spines['left'].set_color('none')
+    ax.spines['bottom'].set_color('none')
+    ax.spines['top'].set_color('none')
+
+    # generate legend
+
+    my_cmap = mpl.colors.LinearSegmentedColormap('my_colormap', ys, 256)
+    norm = mpl.colors.Normalize(-60, 50)
+
+    # c=plt.contourf(x, y, rt, 750, cmap=my_cmap, norm=norm)
+    m.contourf(x, y, C, 110, cmap=my_cmap, norm=norm)  # ,norm=norm cmaps.temp_19lev NCV_jaisnd
+    #d = m.contour(x, y, subT, 110, colors='red', linewidths=0.6, levels=0)
+    #d1 = m.contour(x, y, subMSLP, 70, colors='whitesmoke', linewidths=0.5)  # , alpha=0.6
+    #plt.clabel(d, inline=True, fmt='%.0f', fontsize=2)
+    #plt.clabel(d1, inline=True, fmt='%.0f', colors='whitesmoke', fontsize=2)  # alpha=0.6,
+    '''
+    skip = slice(None, None, 5)
+    # m.streamplot(x, y, u, v, linewidth=0.25, density=4, color='black', arrowsize=0.4, arrowstyle='->')
+
+    m.barbs(x[skip, skip], y[skip, skip], subWU[skip, skip], subWV[skip, skip], length=3.5,
+            sizes=dict(emptybarb=0, spacing=0.2, height=0.5), barb_increments=dict(half=2, full=4, flag=20),
+            linewidth=0.2, color='black')
+    '''
+
+    plt.title('GFS' + name + '\nlnit:' + formatfcit + ' Forecast Hour[' + str(
+        fcst) + '] valid at ' + formatvalid + '\n@myyd & Louis-He',
+              loc='left', fontsize=11)
+    m.drawparallels(np.arange(0, 65, 10), labels=[1, 0, 0, 0], fontsize=8, linewidth=0.5, color='dimgrey',
+                    dashes=[1, 1])
+    m.drawmeridians(np.arange(65., 180., 10), labels=[0, 0, 0, 1], fontsize=8, linewidth=0.5, color='dimgrey',
+                    dashes=[1, 1])
+    m.drawcoastlines(linewidth=0.5)
+    m.drawstates(linewidth=0.4, color='dimgrey')
+    # m.readshapefile('/mnt/c/Users/10678/Desktop/GFS/shp/cnhimap', 'states', drawbounds=True, linewidth=0.5, color='black')
+    ax2 = fig.add_axes([0.88, 0.11, 0.018, 0.77])
+    cbar = mpl.colorbar.ColorbarBase(ax2, cmap=my_cmap, norm=norm, orientation='vertical', drawedges=False)
+    cbar.set_ticks(np.linspace(-60, 50, 23))
+    cbar.ax.set_ylabel('Temperature(℃)', size=8)  # Temperature(℃)
+    cbar.ax.tick_params(labelsize=8)
+    # Temperature(℃)
+
+    # GFS 10m Wind and 2m Air Temperature\nlnit:00z Nov 04 2017 Forecast Hour[36] valid at 12z Sun,Nov 05 2017 6-hour #ERA Interim 850hpa Wind speed and Temperature & 500hpa Geopotential Height#Streamlines
+    plt.savefig('website/static/images/M_GFS_' + areatype + name + '.png', bbox_inches='tight')
+
+    # delete plot for memory
+    del fig
+    plt.cla
+    plt.clf()
+    plt.close(0)
+    del m, lon, lat, lons, lats, my_cmap, norm, cbar, ax, ax2, x, y, skip, analysistime, fcit, formatfcit, timestampfcit, fcst, formatvalid
+
+
+    return False
 source = 'EC'
 
 nargs=len(sys.argv)
@@ -917,6 +1081,30 @@ for i in range(1,nargs):
           if i != nargs - 1:
               plottype = sys.argv[i + 1]
               skip = True
+      elif arg == "--time":
+          if i != nargs - 1:
+              time = sys.argv[i + 1]
+              skip = True
+      elif arg == "--contourf":
+          if i != nargs - 1:
+              contourf = sys.argv[i + 1]
+              skip = True
+      elif arg == "--contour":
+          if i != nargs - 1:
+              contour = sys.argv[i + 1]
+              skip = True
+      elif arg == "--barb":
+          if i != nargs - 1:
+              barb = sys.argv[i + 1]
+              skip = True
+      elif arg == "--contourfcolor":
+          if i != nargs - 1:
+              contourfcolor = sys.argv[i + 1]
+              skip = True
+      elif arg == "--contourcolor":
+          if i != nargs - 1:
+              contourcolor = sys.argv[i + 1]
+              skip = True
       else:
          print ("ERR: unknown arg:",arg)
    else:
@@ -934,6 +1122,8 @@ elif plottype == 'ground':
     getgroundweather(lon, lat, source)
 elif plottype == 'air':
     getairrelated(lon, lat)
+elif plottype == 'map':
+    plotmap(time, contourf, contour, barb, contourfcolor, contourcolor)
 '''
 sched = BlockingScheduler()
 sched.add_job(getweather, 'interval', seconds = 3 * 60 * 60)
