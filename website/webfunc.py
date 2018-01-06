@@ -172,6 +172,8 @@ class product:
                     result += '<p>地面要素时序图（模式：' + model + '  坐标：' + lon + ',' + lat + '）</p>'
                 elif type == 'A':
                     result += '<p>灾害天气风险预报图（模式：' + model + '  坐标：' + lon + ',' + lat + '）</p>'
+                elif type == 'M':
+                    result += '<p>区域天气要素预报图（模式：GFS  区域）</p>'
                 result += '</div></div></div><div class="overlay"></div></div></div></div></div><!-- col-lg-4 -->'
 
                 if colcount == 2:
