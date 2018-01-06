@@ -916,7 +916,7 @@ def plotmap(time, color, line, barb, contourfcolor, linecolor):
     # print(boundary)
 
     # read in files
-    grbs = pygrib.open('root/GFS/rawfile/' + time)
+    grbs = pygrib.open('/root/GFS/rawfile/' + time)
     # extract data from grib file
     if color[:1] == 'T_2m':
         name += '2m Temperature'
