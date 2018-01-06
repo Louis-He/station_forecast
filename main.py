@@ -1043,7 +1043,7 @@ def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
     # m.readshapefile('/mnt/c/Users/10678/Desktop/GFS/shp/cnhimap', 'states', drawbounds=True, linewidth=0.5, color='black')
     ax2 = fig.add_axes([0.88, 0.11, 0.018, 0.77])
     cbar = mpl.colorbar.ColorbarBase(ax2, cmap=cmap_user, norm=norm, orientation='vertical', drawedges=False)
-    cbar.set_ticks(np.linspace(int(C.min), int(C.max), 20))
+    cbar.set_ticks(np.linspace(int(C.min()), int(C.max()), 20))
     cbar.ax.set_ylabel('Temperature(℃)', size=8)  # Temperature(℃)
     cbar.ax.tick_params(labelsize=8)
     # Temperature(℃)
