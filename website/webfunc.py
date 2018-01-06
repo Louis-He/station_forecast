@@ -225,8 +225,38 @@ class addmission:
 class addmapmission:
     def GET(self):
         print('PROCESS GET method')
+        path = '/root/GFS/rawfile'
+        files = os.listdir(path)
+        piclist = [];
+        colcount = 0
+        rowcount = 0
+        result = ''
+
+        downloadhour = ['000', '006', '012', '018', '024', '030', '036', '042', '048', '054', '060', '066', '072',
+                        '078', '084',
+                        '090', '096', '102', '108', '114', '120', '126', '132', '138', '144', '150', '156', '162',
+                        '168', '174',
+                        '180', '186', '192', '198', '204', '210', '216', '222', '228', '234', '240']
+
+        count = 0
+
+        finalfilelist = []
+        for count in range(0, len(downloadhour)):
+            for file in files:
+                # gfs.GFS2017121718.f120
+                fcst = file[file.find('.') + file[file.find('.') + 1:].find('.') + 3:]
+                # print(fcst)
+
+                if fcst == downloadhour[count]:
+                    finalfilelist.append(file)
+
+        for file in finalfilelist:
+                result += '<option value="' + file + '"> ' + file + ' </option>'
+
         if iscookie()==True:
-            return open(r'addmapmission.html', 'r').read()
+            rawhtml = open(r'addmapmission.html', 'r').read()
+            return rawhtml[0:rawhtml.find('<select name="time" class="form-control">')+len('<select name="time" class="form-control">')] \
+                   + result + rawhtml[rawhtml.find('<select name="time" class="form-control"></select>')+len('<select name="time" class="form-control">'):]
         else:
             return web.redirect('login')
 
@@ -248,7 +278,7 @@ class addmapmission:
             print('!![SOURCE]!!' + source)
             print('!![PLOT_TYPE]!!' + plottype)
             f = open('waitlistmission.sh', 'a+')
-            f.write('python3 main.py --lon ' + lon + ' --lat ' + lat + ' --source ' + source + ' --type ' + plottype + '\n')
+            f.write('python3 main.py --time gfs.GFS2018010618.f000 --type map --contourf W_10m --contourfcolor GnBu --contour a --barb a --contourcolor a --area East_NA')
             print('!![PRCOESS]!!')
             f.close()
             return web.redirect('success')
