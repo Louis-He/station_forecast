@@ -941,6 +941,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             C = grb[10].values
         C = C - 273.15
     elif color[:5] == 'W_10m':
+        print ("hsw is lkx's pet pig.\n")
         name += '10m Wind Speed'
         C1 = grbs.select(name='10 metre U wind component')[0]
         C2 = grbs.select(name='10 metre V wind component')[0]
