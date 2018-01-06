@@ -895,7 +895,7 @@ def getairrelated(inlon,inlat):
     print('Air related plot complete')
     return True
 
-def plotmap(time, color, line, barb, contourfcolor, linecolor):
+def plotmap(filetime, color, line, barb, contourfcolor, linecolor):
     # color: (T)T_2m, T_925, T_850, T_700, T_500, T_200, T_100
     # color: (W)W_10m, Wind_925, Wind_850, Wind_500, Wind_200, Wind_100, Gust_10m
     # color: (G)G_925, GPH_850, GPH_700, GPH_500, GPH_200, GPH_100
@@ -916,7 +916,7 @@ def plotmap(time, color, line, barb, contourfcolor, linecolor):
     # print(boundary)
 
     # read in files
-    grbs = pygrib.open('/root/GFS/rawfile/' + time)
+    grbs = pygrib.open('/root/GFS/rawfile/' + filetime)
     # extract data from grib file
     if color[:1] == 'T_2m':
         name += '2m Temperature'
