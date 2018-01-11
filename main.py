@@ -920,27 +920,48 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         name += '2m Temperature'
         C = grbs.select(name='2 metre temperature')[0].values
         C = C - 273.15
+        min = -40
+        max = 40
+        bar = 20
     elif color[:1] == 'T':
         colorlabel = 'Temperature(℃)'
         grb = grbs.select(name='Temperature')
         if color[2:] == '925':
             name += '925hPa Temperature'
             C = grb[27].values
+            min = -44
+            max = 36
+            bar = 20
         if color[2:] == '850':
             name += '850hPa Temperature'
             C = grb[25].values
+            min = -50
+            max = 30
+            bar = 20
         if color[2:] == '700':
             name += '700hPa Temperature'
             C = grb[22].values
+            min = -55
+            max = 25
+            bar = 20
         if color[2:] == '500':
             name += '500hPa Temperature'
             C = grb[18].values
+            min = -70
+            max = 10
+            bar = 20
         if color[2:] == '200':
             name += '200hPa Temperature'
             C = grb[12].values
+            min = -80
+            max = 0
+            bar = 20
         if color[2:] == '100':
             name += '100hPa Temperature'
             C = grb[10].values
+            min = -90
+            max = -10
+            bar = 20
         C = C - 273.15
     elif color[:5] == 'W_10m':
         colorlabel = 'Wind(m/s)'
@@ -949,6 +970,9 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         C1 = grbs.select(name='10 metre U wind component')[0]
         C2 = grbs.select(name='10 metre V wind component')[0]
         C = np.power(np.power(C1.values, 2) + np.power(C2.values, 2), 1/2)
+        min = 0
+        max = 40
+        bar = 10
         del C1, C2
     elif color[:1] == 'W':
         colorlabel = 'Wind(m/s)'
@@ -958,26 +982,44 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             name += '925hPa Wind Speed'
             C1 = grb1[28]
             C2 = grb2[28]
+            min = 0
+            max = 50
+            bar = 10
         if color[2:] == '850':
             name += '850hPa Wind Speed'
             C1 = grb1[26]
             C2 = grb2[26]
+            min = 0
+            max = 70
+            bar = 10
         if color[2:] == '700':
             name += '700hPa Wind Speed'
             C1 = grb1[23]
             C2 = grb2[23]
+            min = 0
+            max = 80
+            bar = 20
         if color[2:] == '500':
             name += '500hPa Wind Speed'
             C1 = grb1[19]
             C2 = grb2[19]
+            min = 0
+            max = 90
+            bar = 20
         if color[2:] == '200':
             name += '200hPa Wind Speed'
             C1 = grb1[13]
             C2 = grb2[13]
+            min = 0
+            max = 90
+            bar = 20
         if color[2:] == '100':
             name += '100hPa Wind Speed'
             C1 = grb1[11]
             C2 = grb2[11]
+            min = 0
+            max = 100
+            bar = 25
         C = np.power(np.power(C1.values, 2) + np.power(C2.values, 2), 1 / 2)
         del C1, C2
 
@@ -1013,7 +1055,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
 
     # generate legend
 
-    norm = mpl.colors.Normalize(int(C.min()), int(C.max()))
+    norm = mpl.colors.Normalize(min, max)
 
     # c=plt.contourf(x, y, rt, 750, cmap=my_cmap, norm=norm)
     cmap_user = plt.cm.bwr
@@ -1052,7 +1094,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     # m.readshapefile('/mnt/c/Users/10678/Desktop/GFS/shp/cnhimap', 'states', drawbounds=True, linewidth=0.5, color='black')
     ax2 = fig.add_axes([0.88, 0.11, 0.018, 0.77])
     cbar = mpl.colorbar.ColorbarBase(ax2, cmap=cmap_user, norm=norm, orientation='vertical', drawedges=False)
-    cbar.set_ticks(np.linspace(int(C.min()), int(C.max()), 20))
+    cbar.set_ticks(np.linspace(min, max, bar))
     cbar.ax.set_ylabel(colorlabel, size=8)  # Temperature(℃)
     cbar.ax.tick_params(labelsize=8)
     # Temperature(℃)
