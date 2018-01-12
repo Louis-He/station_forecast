@@ -1022,6 +1022,46 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             bar = 26
         C = np.power(np.power(C1.values, 2) + np.power(C2.values, 2), 1 / 2)
         del C1, C2
+    #DEVELOPPING!
+    elif color[:1] == 'G':
+        colorlabel = 'Geopotential height(dagpm)'
+        grb = grbs.select(name='Geopotential Height')
+        if color[2:] == '925':
+            name += '925hPa Geopotential height'
+            C = grb[27].values
+            min = 560
+            max = 960
+            bar = 11
+        if color[2:] == '850':
+            name += '850hPa Geopotential height'
+            C = grb[25].values
+            min = 1200
+            max = 1600
+            bar = 11
+        if color[2:] == '700':
+            name += '700hPa Geopotential height'
+            C = grb[22].values
+            min = 2800
+            max = 3200
+            bar = 11
+        if color[2:] == '500':
+            name += '500hPa Geopotential height'
+            C = grb[18].values
+            min = 5200
+            max = 6000
+            bar = 21
+        if color[2:] == '200':
+            name += '200hPa Geopotential height'
+            C = grb[12].values
+            min = 10900
+            max = 12900
+            bar = 11
+        if color[2:] == '100':
+            name += '100hPa Geopotential height'
+            C = grb[10].values
+            min = 15000
+            max = 17000
+            bar = 21
 
     # define longitude and latitude
     Temperature = grbs.select(name='Temperature')[25]
