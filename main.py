@@ -1087,7 +1087,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
               loc='left', fontsize=11)
     m.drawparallels(np.arange(0, 65, 10), labels=[1, 0, 0, 0], fontsize=8, linewidth=0.5, color='dimgrey',
                     dashes=[1, 1])
-    m.drawmeridians(np.arange(65., 180., 10), labels=[0, 0, 0, 1], fontsize=8, linewidth=0.5, color='dimgrey',
+    m.drawmeridians(np.arange(0., 360., 10), labels=[0, 0, 0, 1], fontsize=8, linewidth=0.5, color='dimgrey',
                     dashes=[1, 1])
     m.drawcoastlines(linewidth=0.5)
     m.drawstates(linewidth=0.4, color='dimgrey')
@@ -1101,7 +1101,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
 
     name = name.replace(' ','_')
     # GFS 10m Wind and 2m Air Temperature\nlnit:00z Nov 04 2017 Forecast Hour[36] valid at 12z Sun,Nov 05 2017 6-hour #ERA Interim 850hpa Wind speed and Temperature & 500hpa Geopotential Height#Streamlines
-    plt.savefig('website/static/images/M_GFS_' + areatype + name + '.png', bbox_inches='tight')
+    plt.savefig('website/static/images/M_GFS_' + areatype + name + '-' + filetime + '.png', bbox_inches='tight')
 
     # delete plot for memory
     del fig
