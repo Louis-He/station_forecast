@@ -1073,28 +1073,28 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         grb2 = grbs.select(name='V component of wind')
         if barb == '925':
             name += ', 925hPa Wind(barb)'
-            u = grb1[28]
-            v = grb2[28]
+            u = grb1[28].values
+            v = grb2[28].values
         if barb == '850':
             name += ', 850hPa Wind(barb)'
-            u = grb1[26]
-            v = grb2[26]
+            u = grb1[26].values
+            v = grb2[26].values
         if barb == '700':
             name += ', 700hPa Wind(barb)'
-            u = grb1[23]
-            v = grb2[23]
+            u = grb1[23].values
+            v = grb2[23].values
         if barb == '500':
             name += ', 500hPa Wind(barb)'
-            u = grb1[19]
-            v = grb2[19]
+            u = grb1[19].values
+            v = grb2[19].values
         if barb == '200':
             name += ', 200hPa Wind(barb)'
-            u = grb1[13]
-            v = grb2[13]
+            u = grb1[13].values
+            v = grb2[13].values
         if barb == '100':
             name += ', 100hPa Wind(barb)'
-            u = grb1[11]
-            v = grb2[11]
+            u = grb1[11].values
+            v = grb2[11].values
 
     # define longitude and latitude
     Temperature = grbs.select(name='Temperature')[25]
