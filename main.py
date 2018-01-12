@@ -922,7 +922,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         C = C - 273.15
         min = -40
         max = 40
-        bar = 20
+        bar = 21
     elif color[:1] == 'T':
         colorlabel = 'Temperature(℃)'
         grb = grbs.select(name='Temperature')
@@ -931,37 +931,37 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             C = grb[27].values
             min = -44
             max = 36
-            bar = 20
+            bar = 21
         if color[2:] == '850':
             name += '850hPa Temperature'
             C = grb[25].values
             min = -50
             max = 30
-            bar = 20
+            bar = 21
         if color[2:] == '700':
             name += '700hPa Temperature'
             C = grb[22].values
             min = -55
             max = 25
-            bar = 20
+            bar = 21
         if color[2:] == '500':
             name += '500hPa Temperature'
             C = grb[18].values
             min = -70
             max = 10
-            bar = 20
+            bar = 21
         if color[2:] == '200':
             name += '200hPa Temperature'
             C = grb[12].values
             min = -80
             max = 0
-            bar = 20
+            bar = 21
         if color[2:] == '100':
             name += '100hPa Temperature'
             C = grb[10].values
             min = -90
             max = -10
-            bar = 20
+            bar = 21
         C = C - 273.15
     elif color[:5] == 'W_10m':
         colorlabel = 'Wind(m/s)'
@@ -972,7 +972,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         C = np.power(np.power(C1.values, 2) + np.power(C2.values, 2), 1/2)
         min = 0
         max = 40
-        bar = 10
+        bar = 11
         del C1, C2
     elif color[:1] == 'W':
         colorlabel = 'Wind(m/s)'
@@ -984,42 +984,42 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             C2 = grb2[28]
             min = 0
             max = 50
-            bar = 10
+            bar = 11
         if color[2:] == '850':
             name += '850hPa Wind Speed'
             C1 = grb1[26]
             C2 = grb2[26]
             min = 0
             max = 70
-            bar = 10
+            bar = 11
         if color[2:] == '700':
             name += '700hPa Wind Speed'
             C1 = grb1[23]
             C2 = grb2[23]
             min = 0
             max = 80
-            bar = 20
+            bar = 21
         if color[2:] == '500':
             name += '500hPa Wind Speed'
             C1 = grb1[19]
             C2 = grb2[19]
             min = 0
             max = 90
-            bar = 20
+            bar = 21
         if color[2:] == '200':
             name += '200hPa Wind Speed'
             C1 = grb1[13]
             C2 = grb2[13]
             min = 0
             max = 90
-            bar = 20
+            bar = 21
         if color[2:] == '100':
             name += '100hPa Wind Speed'
             C1 = grb1[11]
             C2 = grb2[11]
             min = 0
             max = 100
-            bar = 25
+            bar = 26
         C = np.power(np.power(C1.values, 2) + np.power(C2.values, 2), 1 / 2)
         del C1, C2
 
