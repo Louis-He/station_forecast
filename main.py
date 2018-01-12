@@ -915,6 +915,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     # read in files
     grbs = pygrib.open('/root/GFS/rawfile/' + filetime)
     # extract data from grib file
+    # FOR COLOUR
     if color[:4] == 'T_2m':
         colorlabel = 'Temperature(℃)'
         name += '2m Temperature'
@@ -963,6 +964,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             max = -10
             bar = 21
         C = C - 273.15
+        del grb
     elif color[:5] == 'W_10m':
         colorlabel = 'Wind(m/s)'
         print ("hsw is lkx's pet pig.\n")
@@ -1022,7 +1024,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             bar = 26
         C = np.power(np.power(C1.values, 2) + np.power(C2.values, 2), 1 / 2)
         del C1, C2
-    #DEVELOPPING!
+        del grb1, grb2
     elif color[:1] == 'G':
         colorlabel = 'Geopotential height(dagpm)'
         grb = grbs.select(name='Geopotential Height')
@@ -1062,6 +1064,37 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             min = 15000
             max = 17000
             bar = 21
+        del grb
+    # FOR BARB
+    if barb == 'none':
+        pass
+    else:
+        grb1 = grbs.select(name='U component of wind')
+        grb2 = grbs.select(name='V component of wind')
+        if barb == '925':
+            name += ', 925hPa Wind(barb)'
+            u = grb1[28]
+            v = grb2[28]
+        if barb == '850':
+            name += ', 850hPa Wind(barb)'
+            u = grb1[26]
+            v = grb2[26]
+        if barb == '700':
+            name += ', 700hPa Wind(barb)'
+            u = grb1[23]
+            v = grb2[23]
+        if barb == '500':
+            name += ', 500hPa Wind(barb)'
+            u = grb1[19]
+            v = grb2[19]
+        if barb == '200':
+            name += ', 200hPa Wind(barb)'
+            u = grb1[13]
+            v = grb2[13]
+        if barb == '100':
+            name += ', 100hPa Wind(barb)'
+            u = grb1[11]
+            v = grb2[11]
 
     # define longitude and latitude
     Temperature = grbs.select(name='Temperature')[25]
@@ -1109,14 +1142,14 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     #d1 = m.contour(x, y, subMSLP, 70, colors='whitesmoke', linewidths=0.5)  # , alpha=0.6
     #plt.clabel(d, inline=True, fmt='%.0f', fontsize=2)
     #plt.clabel(d1, inline=True, fmt='%.0f', colors='whitesmoke', fontsize=2)  # alpha=0.6,
-    '''
-    skip = slice(None, None, 5)
-    # m.streamplot(x, y, u, v, linewidth=0.25, density=4, color='black', arrowsize=0.4, arrowstyle='->')
 
-    m.barbs(x[skip, skip], y[skip, skip], subWU[skip, skip], subWV[skip, skip], length=3.5,
-            sizes=dict(emptybarb=0, spacing=0.2, height=0.5), barb_increments=dict(half=2, full=4, flag=20),
-            linewidth=0.2, color='black')
-    '''
+    if barb != 'none':
+        skip = slice(None, None, 5)
+        # m.streamplot(x, y, u, v, linewidth=0.25, density=4, color='black', arrowsize=0.4, arrowstyle='->')
+        m.barbs(x[skip, skip], y[skip, skip], u[skip, skip], v[skip, skip], length=3.5,
+                sizes=dict(emptybarb=0, spacing=0.2, height=0.5), barb_increments=dict(half=2, full=4, flag=20),
+                linewidth=0.2, color='black')
+
     # additional geoinfomation
     if areatype == 'CN':
         m.readshapefile('geo/cnhimap', 'states', drawbounds=True, linewidth=0.5, color='black')
