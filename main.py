@@ -900,7 +900,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     # color: (W)W_10m, Wind_925, Wind_850, Wind_500, Wind_200, Wind_100, Gust_10m
     # color: (G)G_925, GPH_850, GPH_700, GPH_500, GPH_200, GPH_100
     # color: (R)R_2m, RH_925, RH_850, RH_700, RH_500, RH_200, RH_100
-    # color: Haines Index, MSLP, Surface lifted index:K, Precipitable water, Total Cloud Cover, Convective available potential energy
+    # color: MSLP, (K)Surface lifted index:K, (PW)Precipitable water, (TCC)Total Cloud Cover, (CAPE)Convective available potential energy
     name = ''
 
     # plot the diagram of selected element
@@ -1065,6 +1065,42 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             max = 17000
             bar = 21
         del grb
+    elif color == 'MSLP':
+        colorlabel = 'Pressure(Pa)'
+        C = grbs.select(name='MSLP (Eta model reduction)')[0].values
+        name += 'Mean Sea Level Pressure'
+        min = 95000
+        max = 107000
+        bar = 31
+    elif color == 'K':
+        colorlabel = 'K index(K)'
+        C = grbs.select(name='Surface lifted index')[0].values
+        name += 'K index'
+        min = 0
+        max = 60
+        bar = 21
+    elif color == 'PW':
+        colorlabel = 'Precipitable water(mm)'
+        C = grbs.select(name='Precipitable water')[0].values
+        name += 'Precipitable water'
+        min = 0
+        max = 150
+        bar = 31
+    elif color == 'TCC':
+        colorlabel = 'Total Cloud Cover'
+        C = grbs.select(name='Total Cloud Cover')[0].values
+        name += 'Total Cloud Cover'
+        min = 0
+        max = 10
+        bar = 21
+    elif color == 'CAPE':
+        colorlabel = 'Convective available potential energy'
+        C = grbs.select(name='Convective available potential energy')[0].values
+        name += 'CAPE'
+        min = 0
+        max = 5000
+        bar = 250
+
     # FOR BARB
     if barb == 'none':
         pass
