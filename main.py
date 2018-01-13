@@ -1148,7 +1148,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         # m.streamplot(x, y, u, v, linewidth=0.25, density=4, color='black', arrowsize=0.4, arrowstyle='->')
         m.barbs(x[skip, skip], y[skip, skip], u[skip, skip], v[skip, skip], length=3.5,
                 sizes=dict(emptybarb=0, spacing=0.2, height=0.5), barb_increments=dict(half=2, full=4, flag=20),
-                linewidth=0.2, color='black')
+                linewidth=0.2, color='gray')
 
     # additional geoinfomation
     if areatype == 'CN':
