@@ -150,6 +150,7 @@
 
                           <h5>2.选择填色方案：</h5>
                           <select name="contourf" class="form-control">
+                            <option value="none">无要素</option>
                               <optgroup label="温度">
 						    <option value="T_2m">2m气温</option>
                             <option value="T_Max">2m最高气温</option>
@@ -213,21 +214,68 @@
 
                           <hr>
 
-                          <!--
                           <h5>4.选择等值线方案：</h5>
-                          <select name="products[]" class="form-control">
-						    <option>2m气温</option>
-						    <option>925hPa温度</option>
-						    <option>850hPa温度</option>
-						    <option>700hPa温度</option>
-						    <option>500hPa温度</option>
-                            <option>200hPa温度</option>
-                            <option>100hPa温度</option>
+                          <select name="contour" class="form-control">
+                            <option value="none">无要素</option>
+                              <optgroup label="温度">
+						    <option value="T_2m">2m气温</option>
+                            <option value="T_Max">2m最高气温</option>
+                            <option value="T_Min">2m最低气温</option>
+						    <option value="T_925">925hPa温度</option>
+						    <option value="T_850">850hPa温度</option>
+						    <option value="T_700">700hPa温度</option>
+						    <option value="T_500">500hPa温度</option>
+                            <option value="T_200">200hPa温度</option>
+                            <option value="T_100">100hPa温度</option>
+                                  </optgroup>
+                               <optgroup label="风速">
+                            <option value="W_10m">10m风</option>
+						    <option value="W_925">925hPa风</option>
+						    <option value="W_850">850hPa风</option>
+						    <option value="W_700">700hPa风</option>
+						    <option value="W_500">500hPa风</option>
+                            <option value="W_200">200hPa风</option>
+                            <option value="W_100">100hPa风</option>
+                                   </optgroup>
+                              <optgroup label="位势高度">
+                            <option value="G_925">925hPa位势高度</option>
+						    <option value="G_850">850hPa位势高度</option>
+						    <option value="G_700">700hPa位势高度</option>
+						    <option value="G_500">500hPa位势高度</option>
+                            <option value="G_200">200hPa位势高度</option>
+                            <option value="G_100">100hPa位势高度</option>
+                                   </optgroup>
+                              <optgroup label="其他要素">
+                            <option value="MSLP">海平面气压场</option>
+						    <option value="K">K指数</option>
+						    <option value="PW">整层可降水量</option>
+						    <option value="TCC">总云量</option>
+                            <option value="CAPE">CAPE能量</option>
+                            <option value="SD">雪深</option>
+                            <option value="PFP">冰雪降水形式占比</option>
+						    <option value="SunD">光照时长</option>
+                            <option value="LI">LI抬升指数</option>
+                            <option value="PBLH">行星边界层高度</option>
+                                   </optgroup>
 						  </select>
 
-                          !-->
+                          <hr>
 
-                          <h5>4.选择风旗显示：</h5>
+                          <h5>5.选择等值线颜色：</h5>
+                          <select name="linecolor" class="form-control">
+						    <option value="black">黑色</option>
+						    <option value="gray">深灰色</option>
+						    <option value="silver">淡灰色</option>
+						    <option value="whitesmoke">灰白色</option>
+						    <option value="red">红色</option>
+                            <option value="blue">蓝色</option>
+                            <option value="darkgreen">深绿色</option>
+                            <option value="m">紫色</option>
+						  </select>
+
+                          <hr>
+
+                          <h5>6.选择风旗显示：</h5>
                           <select name="barb" class="form-control">
 						    <option value="none">无风旗</option>
 						    <option value="925">925hPa风旗</option>
