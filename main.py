@@ -927,7 +927,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         min = -40
         max = 40
         bar = 21
-    elif color[:4] == 'T_Max':
+    elif color[:5] == 'T_Max':
         colorlabel = 'Temperature(℃)'
         name += '2m Maximum Temperature'
         C = grbs.select(name='Maximum temperature')[0].values
@@ -935,7 +935,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         min = -40
         max = 40
         bar = 21
-    elif color[:4] == 'T_Min':
+    elif color[:5] == 'T_Min':
         colorlabel = 'Temperature(℃)'
         name += '2m Minimum Temperature'
         C = grbs.select(name='Minimum temperature')[0].values
@@ -943,7 +943,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         min = -40
         max = 40
         bar = 21
-    elif color[:1] == 'T':
+    elif color[:1] == 'T' and not color[:5] == 'T_Max' and not color[:5] == 'T_Min' and not color[:4] == 'T_2m':
         colorlabel = 'Temperature(℃)'
         grb = grbs.select(name='Temperature')
         if color[2:] == '925':
