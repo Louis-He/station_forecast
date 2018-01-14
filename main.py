@@ -896,11 +896,12 @@ def getairrelated(inlon,inlat):
     return True
 
 def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
-    # color: (T)T_2m, T_925, T_850, T_700, T_500, T_200, T_100
+    # color: (T)T_2m,(T_Max)Maximum temperature, (T_Min)Minimum temperature, T_925, T_850, T_700, T_500, T_200, T_100
     # color: (W)W_10m, Wind_925, Wind_850, Wind_500, Wind_200, Wind_100, Gust_10m
     # color: (G)G_925, GPH_850, GPH_700, GPH_500, GPH_200, GPH_100
     # color: (R)R_2m, RH_925, RH_850, RH_700, RH_500, RH_200, RH_100
-    # color: MSLP, (K)Surface lifted index:K, (PW)Precipitable water, (TCC)Total Cloud Cover, (CAPE)Convective available potential energy
+    # color: MSLP, (K)Surface lifted index:K, (PW)Precipitable water, (TCC)Total Cloud Cover, (CAPE)Convective available potential energy,
+    # color: (SD)Snow depth, (PFP)Percent frozen precipitation, (SunD)Sunshine Duration, (LI)Surface lifted index, (PBLH)Planetary boundary layer height
     name = ''
 
     # plot the diagram of selected element
@@ -920,6 +921,22 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         colorlabel = 'Temperature(℃)'
         name += '2m Temperature'
         C = grbs.select(name='2 metre temperature')[0].values
+        C = C - 273.15
+        min = -40
+        max = 40
+        bar = 21
+    elif color[:4] == 'T_Max':
+        colorlabel = 'Temperature(℃)'
+        name += '2m Maximum Temperature'
+        C = grbs.select(name='Maximum temperature')[0].values
+        C = C - 273.15
+        min = -40
+        max = 40
+        bar = 21
+    elif color[:4] == 'T_Min':
+        colorlabel = 'Temperature(℃)'
+        name += '2m Minimum Temperature'
+        C = grbs.select(name='Minimum temperature')[0].values
         C = C - 273.15
         min = -40
         max = 40
@@ -1100,6 +1117,41 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         min = 0
         max = 5000
         bar = 25
+    elif color == 'SD':
+        colorlabel = 'Snow Depth(m)'
+        C = grbs.select(name='Snow depth')[0].values
+        name += 'Snow Depth'
+        min = 0
+        max = 4
+        bar = 21
+    elif color == 'PFP':
+        colorlabel = 'Percent frozen precipitation(%)'
+        C = grbs.select(name='Percent frozen precipitation')[0].values
+        name += 'Percent frozen precipitation'
+        min = 0
+        max = 100
+        bar = 11
+    elif color == 'SunD':
+        colorlabel = 'Sunshine Duration(s)'
+        C = grbs.select(name='Sunshine Duration')[0].values
+        name += 'Sunshine Duration'
+        min = 0
+        max = 21600
+        bar = 13
+    elif color == 'LI':
+        colorlabel = 'lifted index'
+        C = grbs.select(name='Surface lifted index')[0].values
+        name += 'Surface lifted index'
+        min = -12
+        max = 12
+        bar = 13
+    elif color == 'PBLH':
+        colorlabel = 'Planetary boundary layer height'
+        C = grbs.select(name='Planetary boundary layer height')[0].values
+        name += 'Planetary boundary layer height'
+        min = 0
+        max = 5000
+        bar = 26
 
     # FOR BARB
     if barb == 'none':
