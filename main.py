@@ -902,6 +902,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     # color: (R)R_2m, RH_925, RH_850, RH_700, RH_500, RH_200, RH_100
     # color: MSLP, (K)Surface lifted index:K, (PW)Precipitable water, (TCC)Total Cloud Cover, (CAPE)Convective available potential energy,
     # color: (SD)Snow depth, (PFP)Percent frozen precipitation, (SunD)Sunshine Duration, (LI)Surface lifted index, (PBLH)Planetary boundary layer height
+    print('[TEST PURPOSE]line: '+line)
     name = ''
 
     # plot the diagram of selected element
@@ -1158,6 +1159,17 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     # FOR BARB
     if barb == 'none':
         pass
+    elif color[:5] == 'W_10m':
+        colorlabel = 'Wind(m/s)'
+        print ("hsw is lkx's pet pig.\n")
+        name += '10m Wind Speed'
+        C1 = grbs.select(name='10 metre U wind component')[0]
+        C2 = grbs.select(name='10 metre V wind component')[0]
+        C = np.power(np.power(C1.values, 2) + np.power(C2.values, 2), 1/2)
+        min = 0
+        max = 40
+        bar = 11
+        del C1, C2
     else:
         grb1 = grbs.select(name='U component of wind')
         grb2 = grbs.select(name='V component of wind')
