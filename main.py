@@ -918,9 +918,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     grbs = pygrib.open('/root/GFS/rawfile/' + filetime)
     # extract data from grib file
     # FOR COLOUR
-    if color == 'none':
-        pass
-    elif color[:4] == 'T_2m':
+    if color[:4] == 'T_2m':
         colorlabel = 'Temperature(℃)'
         name += '2m Temperature'
         C = grbs.select(name='2 metre temperature')[0].values
@@ -1486,9 +1484,11 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     cmap_user = ldict['cmap_user']
     m.contourf(x, y, C, 20, cmap = cmap_user, norm = norm)  # ,norm=norm cmaps.temp_19lev NCV_jaisnd
     d = m.contour(x, y, C, bar, colors='red', linewidths=0.6, levels=0)
-    d1 = m.contour(x, y, D, 70, colors=linecolor, linewidths=0.5)  # , alpha=0.6
+    if line != 'none':
+        d1 = m.contour(x, y, D, 70, colors=linecolor, linewidths=0.5)  # , alpha=0.6
     plt.clabel(d, inline=True, fmt='%.0f', fontsize=2)
-    plt.clabel(d1, inline=True, fmt='%.0f', colors=linecolor, fontsize=2)  # alpha=0.6,
+    if line != 'none':
+        plt.clabel(d1, inline=True, fmt='%.0f', colors=linecolor, fontsize=2)  # alpha=0.6,
 
     if barb != 'none':
         skip = slice(None, None, 5)
