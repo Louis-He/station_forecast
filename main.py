@@ -1067,9 +1067,9 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         if color[2:] == '500':
             name += '500hPa Geopotential height'
             C = grb[18].values
-            min = 5200
+            min = 5000
             max = 6000
-            bar = 21
+            bar = 26
         if color[2:] == '200':
             name += '200hPa Geopotential height'
             C = grb[12].values
