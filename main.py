@@ -1483,12 +1483,11 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     exec(tmpstr, globals(), ldict)
     cmap_user = ldict['cmap_user']
     m.contourf(x, y, C, 20, cmap = cmap_user, norm = norm)  # ,norm=norm cmaps.temp_19lev NCV_jaisnd
-    d = m.contour(x, y, C, bar, colors='red', linewidths=0.6, levels=0)
+    #d = m.contour(x, y, C, bar, colors='red', linewidths=0.6, levels=0)
+    # plt.clabel(d, inline=True, fmt='%.0f', fontsize=2)
     if line != 'none':
-        d1 = m.contour(x, y, D, 20, colors=linecolor, linewidths=0.5)  # , alpha=0.6
-    plt.clabel(d, inline=True, fmt='%.0f', fontsize=2)
-    if line != 'none':
-        plt.clabel(d1, inline=True, fmt='%.0f', colors=linecolor, fontsize=2)  # alpha=0.6,
+        d1 = m.contour(x, y, D, 10, colors=linecolor, linewidths=0.5)  # , alpha=0.6
+        plt.clabel(d1, inline=True, fmt='%.0f', colors=linecolor, fontsize=8)  # alpha=0.6,
 
     if barb != 'none':
         skip = slice(None, None, 5)
