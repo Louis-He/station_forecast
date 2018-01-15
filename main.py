@@ -1210,64 +1210,64 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         name += ',2m Temperature(line)'
         D = grbs.select(name='2 metre temperature')[0].values
         D = D - 273.15
-        min = -40
-        max = 40
-        bar = 21
+        linemin = -40
+        linemax = 40
+        linebar = 21
     elif line[:4] == 'T_Max':
         linelabel = 'Temperature(℃)'
         name += ',2m Maximum Temperature(line)'
         D = grbs.select(name='Maximum temperature')[0].values
         D = D - 273.15
-        min = -40
-        max = 40
-        bar = 21
+        linemin = -40
+        linemax = 40
+        linebar = 21
     elif line[:4] == 'T_Min':
         linelabel = 'Temperature(℃)'
         name += ',2m Minimum Temperature(line)'
         D = grbs.select(name='Minimum temperature')[0].values
         D = D - 273.15
-        min = -40
-        max = 40
-        bar = 21
+        linemin = -40
+        linemax = 40
+        linebar = 21
     elif line[:1] == 'T':
         linelabel = 'Temperature(℃)'
         grb = grbs.select(name='Temperature')
         if line[2:] == '925':
             name += ',925hPa Temperature(line)'
             D = grb[27].values
-            min = -44
-            max = 36
-            bar = 21
+            linemin = -44
+            linemax = 36
+            linebar = 21
         if line[2:] == '850':
             name += ',850hPa Temperature(line)'
             D = grb[25].values
-            min = -50
-            max = 30
-            bar = 21
+            linemin = -50
+            linemax = 30
+            linebar = 21
         if line[2:] == '700':
             name += ',700hPa Temperature(line)'
             D = grb[22].values
-            min = -55
-            max = 25
-            bar = 21
+            linemin = -55
+            linemax = 25
+            linebar = 21
         if line[2:] == '500':
             name += ',500hPa Temperature(line)'
             D = grb[18].values
-            min = -70
-            max = 10
-            bar = 21
+            linemin = -70
+            linemax = 10
+            linebar = 21
         if line[2:] == '200':
             name += ',200hPa Temperature(line)'
             D = grb[12].values
-            min = -80
-            max = 0
-            bar = 21
+            linemin = -80
+            linemax = 0
+            linebar = 21
         if line[2:] == '100':
             name += ',100hPa Temperature(line)'
             D = grb[10].values
-            min = -90
-            max = -10
-            bar = 21
+            linemin = -90
+            linemax = -10
+            linebar = 21
         D = D - 273.15
         del grb
     elif line[:5] == 'W_10m':
@@ -1277,9 +1277,9 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         D1 = grbs.select(name='10 metre U wind component')[0]
         D2 = grbs.select(name='10 metre V wind component')[0]
         D = np.power(np.power(D1.values, 2) + np.power(D2.values, 2), 1/2)
-        min = 0
-        max = 40
-        bar = 11
+        linemin = 0
+        linemax = 40
+        linebar = 11
         del D1, D2
     elif line[:1] == 'W':
         linelabel = 'Wind(m/s)'
@@ -1289,44 +1289,44 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             name += ',925hPa Wind Speed(line)'
             D1 = grb1[28]
             D2 = grb2[28]
-            min = 0
-            max = 50
-            bar = 11
+            linemin = 0
+            linemax = 50
+            linebar = 11
         if line[2:] == '850':
             name += ',850hPa Wind Speed(line)'
             D1 = grb1[26]
             D2 = grb2[26]
-            min = 0
-            max = 70
-            bar = 11
+            linemin = 0
+            linemax = 70
+            linebar = 11
         if line[2:] == '700':
             name += ',700hPa Wind Speed(line)'
             D1 = grb1[23]
             D2 = grb2[23]
-            min = 0
-            max = 80
-            bar = 21
+            linemin = 0
+            linemax = 80
+            linebar = 21
         if line[2:] == '500':
             name += ',500hPa Wind Speed(line)'
             D1 = grb1[19]
             D2 = grb2[19]
-            min = 0
-            max = 90
-            bar = 21
+            linemin = 0
+            linemax = 90
+            linebar = 21
         if line[2:] == '200':
             name += ',200hPa Wind Speed(line)'
             D1 = grb1[13]
             D2 = grb2[13]
-            min = 0
-            max = 90
-            bar = 21
+            linemin = 0
+            linemax = 90
+            linebar = 21
         if line[2:] == '100':
             name += ',100hPa Wind Speed(line)'
             D1 = grb1[11]
             D2 = grb2[11]
-            min = 0
-            max = 100
-            bar = 26
+            linemin = 0
+            linemax = 100
+            linebar = 26
         D = np.power(np.power(D1.values, 2) + np.power(D2.values, 2), 1 / 2)
         del D1, D2
         del grb1, grb2
@@ -1336,110 +1336,110 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         if line[2:] == '925':
             name += ',925hPa Geopotential height(line)'
             D = grb[27].values
-            min = 560
-            max = 960
-            bar = 11
+            linemin = 560
+            linemax = 960
+            linebar = 11
         if line[2:] == '850':
             name += ',850hPa Geopotential height(line)'
             D = grb[25].values
-            min = 1200
-            max = 1600
-            bar = 11
+            linemin = 1200
+            linemax = 1600
+            linebar = 11
         if line[2:] == '700':
             name += ',700hPa Geopotential height(line)'
             D = grb[22].values
-            min = 2800
-            max = 3200
-            bar = 11
+            linemin = 2800
+            linemax = 3200
+            linebar = 11
         if line[2:] == '500':
             name += ',500hPa Geopotential height(line)'
             D = grb[18].values
-            min = 5200
-            max = 6000
-            bar = 21
+            linemin = 5200
+            linemax = 6000
+            linebar = 21
         if line[2:] == '200':
             name += ',200hPa Geopotential height(line)'
             D = grb[12].values
-            min = 10900
-            max = 12900
-            bar = 11
+            linemin = 10900
+            linemax = 12900
+            linebar = 11
         if line[2:] == '100':
             name += ',100hPa Geopotential height(line)'
             D = grb[10].values
-            min = 15000
-            max = 17000
-            bar = 21
+            linemin = 15000
+            linemax = 17000
+            linebar = 21
         del grb
     elif line == 'MSLP':
         linelabel = 'Pressure(Pa)'
         D = grbs.select(name='MSLP (Eta model reduction)')[0].values
         name += ',Mean Sea Level Pressure(line)'
-        min = 95000
-        max = 107000
-        bar = 31
+        linemin = 95000
+        linemax = 107000
+        linebar = 31
     elif line == 'K':
         linelabel = 'K index(K)'
         D = grbs.select(name='Surface lifted index')[0].values
         name += ',K index(line)'
-        min = 0
-        max = 60
-        bar = 21
+        linemin = 0
+        linemax = 60
+        linebar = 21
     elif line == 'PW':
         linelabel = 'Precipitable water(mm)'
         D = grbs.select(name='Precipitable water')[0].values
         name += ',Precipitable water(line)'
-        min = 0
-        max = 150
-        bar = 31
+        linemin = 0
+        linemax = 150
+        linebar = 31
     elif line == 'TCC':
         linelabel = 'Total Cloud Cover'
         D = grbs.select(name='Total Cloud Cover')[0].values
         name += ',Total Cloud Cover(line)'
-        min = 0
-        max = 10
-        bar = 21
+        linemin = 0
+        linemax = 10
+        linebar = 21
     elif line == 'CAPE':
         linelabel = 'Convective available potential energy'
         D = grbs.select(name='Convective available potential energy')[0].values
         name += ',CAPE(line)'
-        min = 0
-        max = 5000
-        bar = 25
+        linemin = 0
+        linemax = 5000
+        linebar = 25
     elif line == 'SD':
         linelabel = 'Snow Depth(m)'
         D = grbs.select(name='Snow depth')[0].values
         name += ',Snow Depth(line)'
-        min = 0
-        max = 4
-        bar = 21
+        linemin = 0
+        linemax = 4
+        linebar = 21
     elif line == 'PFP':
         linelabel = 'Percent frozen precipitation(%)'
         D = grbs.select(name='Percent frozen precipitation')[0].values
         name += ',Percent frozen precipitation(line)'
-        min = 0
-        max = 100
-        bar = 11
+        linemin = 0
+        linemax = 100
+        linebar = 11
     elif line == 'SunD':
         linelabel = 'Sunshine Duration(s)'
         D = grbs.select(name='Sunshine Duration')[0].values
         name += ',Sunshine Duration(line)'
-        min = 0
-        max = 21600
-        bar = 13
+        linemin = 0
+        linemax = 21600
+        linebar = 13
     elif line == 'LI':
         linelabel = 'lifted index'
         D = grbs.select(name='Surface lifted index')[0].values
         name += ',Surface lifted index(line)'
-        min = -12
-        max = 12
-        bar = 13
+        linemin = -12
+        linemax = 12
+        linebar = 13
     elif line == 'PBLH':
         linelabel = 'Planetary boundary layer height'
         D = grbs.select(name='Planetary boundary layer height')[0].values
         name += ',Planetary boundary layer height(line)'
-        min = 0
-        max = 5000
-        bar = 26
+        linemin = 0
+        linemax = 5000
+        linebar = 26
 
     # define longitude and latitude
     Temperature = grbs.select(name='Temperature')[25]
