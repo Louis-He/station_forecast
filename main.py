@@ -1157,16 +1157,13 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     # FOR BARB
     if barb == 'none':
         pass
-    elif color[:5] == 'W_10m':
-        colorlabel = 'Wind(m/s)'
+    elif barb == '10m':
         print ("hsw is lkx's pet pig.\n")
-        name += '10m Wind Speed'
+        name += ', 10m Wind Speed(barb)'
         C1 = grbs.select(name='10 metre U wind component')[0]
         C2 = grbs.select(name='10 metre V wind component')[0]
-        C = np.power(np.power(C1.values, 2) + np.power(C2.values, 2), 1/2)
-        min = 0
-        max = 40
-        bar = 11
+        u = C1.values
+        v = C2.values
         del C1, C2
     else:
         grb1 = grbs.select(name='U component of wind')
@@ -1195,6 +1192,7 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
             name += ', 100hPa Wind(barb)'
             u = grb1[11].values
             v = grb2[11].values
+        del grb1, grb2
 
     # line: (T)T_2m,(T_Max)Maximum temperature, (T_Min)Minimum temperature, T_925, T_850, T_700, T_500, T_200, T_100
     # line: (W)W_10m, Wind_925, Wind_850, Wind_500, Wind_200, Wind_100, Gust_10m
@@ -1519,6 +1517,8 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
     # Temperature(℃)
 
     name = name.replace(' ','_')
+    name = name.replace('(', '_')
+    name = name.replace(')', '_')
     # GFS 10m Wind and 2m Air Temperature\nlnit:00z Nov 04 2017 Forecast Hour[36] valid at 12z Sun,Nov 05 2017 6-hour #ERA Interim 850hpa Wind speed and Temperature & 500hpa Geopotential Height#Streamlines
     plt.savefig('website/static/images/M_GFS_' + areatype + name + '_' + filetime + '.png', bbox_inches='tight')
 
