@@ -1122,9 +1122,9 @@ def plotmap(filetime, areatype, color, line, barb, contourfcolor, linecolor):
         colorlabel = 'Snow Depth(m)'
         C = grbs.select(name='Snow depth')[0].values
         name += 'Snow Depth'
-        min = 0
-        max = 2
-        bar = 21
+        min = 0.01
+        max = 1.51
+        bar = 31
     elif color == 'PFP':
         colorlabel = 'Percent frozen precipitation(%)'
         C = grbs.select(name='Percent frozen precipitation')[0].values
