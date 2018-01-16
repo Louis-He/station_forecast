@@ -99,6 +99,7 @@
                       </a>
                       <ul class="sub">
                           <li><a href="addmission">添加任务</a></li>
+                          <li><a href="addmapmission">添加区域任务</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">
@@ -145,6 +146,13 @@
                               </tr>
                               -->
                               <tr>
+                                  <td>计划绘图</td>
+                                  <td class="hidden-phone">根据服务器使用效率，可能对自主区域天气预报图绘图进行限制</td>
+                                  <td>根据情况进行调整</td>
+                                  <td><span class="label label-info label-mini">计划中</span></td>
+                                  <!--<td><span class="label label-success label-mini">已完成</span></td>-->
+                              </tr>
+                              <tr>
                                   <td>有偿登陆</td>
                                   <td class="hidden-phone">自2018年1月1日起，为确保本平台正常运行，用户将会被收取每月约10人民币的月费以供服务器租借与维护费用</td>
                                   <td>用户：admin01, user01测试账户将会被注销</td>
@@ -159,6 +167,14 @@
               </div><!-- /row -->
 
 				<div class="row">
+
+                    <div class="col-md-12 mt">
+	                  	<div class="content-panel">
+                            <h4><i class="fa fa-angle-right"></i>2018年01月15日更新</h4>
+                            <hr>
+                            <h5>&nbsp&nbsp1.新增自主天气区域预报图绘制。</h5>
+                        </div><!--/content-panel -->
+	                  </div><!-- /col-md-12 -->
 
                     <div class="col-md-12 mt">
 	                  	<div class="content-panel">
@@ -278,7 +294,7 @@
             title: '通知',
             // (string | mandatory) the text inside the notification
             // text: '2017年12月25日至<a style="color:#ffd777">2017年12月31日</a>，本系统将开放测试，自2018年1月1日起本系统将变更为有偿服务。',
-            text: '正在开发自定义区域预报图绘制，敬请期待',
+            text: '自定义区域预报图绘制初步完成，用户可进入<a href="addmapmission" style="color:#ffd777">任务申请页面</a>并自由提交预报图绘制测试，但可能存在绘图漏洞，请及时汇报给管理员，谢谢。',
             // (string | optional) the image to display on the left
             image: 'static/assets/img/ui-sam.jpg',
             // (bool | optional) if you want it to fade out on its own or just sit there
