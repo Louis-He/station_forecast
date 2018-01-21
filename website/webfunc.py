@@ -15,7 +15,8 @@ urls = (
     '/GFS500', 'GFS500',
     '/updatehistory', 'updatehistory',
     '/setcookie', 'CookieSet',
-    '/getcookie', 'CookieGet'
+    '/getcookie', 'CookieGet',
+    '/userInfo', 'userInfo'
 )
 app = web.application(urls, globals())
 
@@ -494,6 +495,17 @@ class CookieGet:
             return "Logged in"
         else:
             return open(r'login.html', 'r').read()
+
+class userInfo:
+    def GET(self):
+        client = [web.ctx.env.get('HTTP_REFERER', 'http://google.com'),
+                  web.ctx.ip,
+                  web.ctx.host,
+                  web.ctx.status,
+                  web.ctx.headers
+                  ]
+
+        return client
 
 if __name__ == "__main__":
     f = open('waitlistmission.sh', 'w+')
