@@ -741,8 +741,6 @@ def getairrelated(inlon,inlat):
              '084',
              '090', '096', '102', '108', '114', '120']
 
-
-
     #data need:
     mslp = []
     rh_2m = []
