@@ -35,12 +35,19 @@ allowed = (
     ('user12','534d29qf')#
 )
 
+# check user's access
 def iscookie():
     access = web.cookies().get('access')
     if access=='True':
         return True
     else:
         return False
+
+# return username from cookie
+def getusername():
+    if iscookie():
+        return web.cookies().get('user')
+    return 'ERROR: NEED TO AUTHENTICATE FIRST.'
 
 class index:
     def GET(self):
@@ -505,7 +512,9 @@ class userInfo:
                   web.ctx.headers
                   ]
 
-        return client
+        username = getusername()
+
+        return str(client) + username
 
 if __name__ == "__main__":
     f = open('waitlistmission.sh', 'w+')
