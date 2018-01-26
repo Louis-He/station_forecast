@@ -507,8 +507,7 @@ class CookieGet:
 
 class userInfo:
     def GET(self):
-        client = [web.ctx.env.get('HTTP_REFERER', 'http://google.com'),
-                  web.ctx.ip,
+        client = [web.ctx.ip,
                   web.ctx.host,
                   web.ctx.status,
                   web.ctx.headers
@@ -516,7 +515,7 @@ class userInfo:
 
         username = getusername()
 
-        return str(client) + username
+        return 'You have been logged in as ' + username + '. From IP: ' + client[0] + '\n Status:' + client[2]
 
 if __name__ == "__main__":
     f = open('waitlistmission.sh', 'w+')
