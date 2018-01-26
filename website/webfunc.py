@@ -493,8 +493,10 @@ class updatehistory:
 class CookieSet:
     def GET(self):
         i = web.input(access='True')
-        web.setcookie('access', i.access, 5)
-        return "ACCESS set in your cookie"
+        web.setcookie('access', i.access, 600)
+        i = web.input(user='TEST_USER')
+        web.setcookie('user', i.user, 600)
+        return "ACCESS and TEST username were set in your cookie"
 
 class CookieGet:
     def GET(self):
