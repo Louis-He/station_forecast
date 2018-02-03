@@ -1,4 +1,5 @@
 import web
+import MySQLdb
 import os
 urls = (
     '/index', 'index',
@@ -13,6 +14,7 @@ urls = (
     '/GFSrain', 'GFSrain',
     '/GFSsurf', 'GFSsurf',
     '/GFS500', 'GFS500',
+    '/air', 'air',
     '/updatehistory', 'updatehistory',
     '/setcookie', 'CookieSet',
     '/getcookie', 'CookieGet',
@@ -22,11 +24,11 @@ app = web.application(urls, globals())
 
 allowed = (
     ('qxahz','Tybbs'),# Forever
-    ('user02','123roxc8'),# ~2017.02.02
+    #('user02','123roxc8'),# ~2017.02.02
     ('user03','wo8cnqw7'),# ~2017.02.03
-    ('user04','1huxe271'),# ~2017.02.03
+    #('user04','1huxe271'),# ~2017.02.03
     ('user05','sd7ar9d2'),# ~2017.06.03
-    ('user06','sa675scz'),# ~2017.02.03
+    #('user06','sa675scz'),# ~2017.02.03
     ('user07','a8sd979a'),# ~2017.02.05
     ('user08','sd8f7sf9'),# ~2017.02.05
     ('user09','asd7bc9v'),#~2017.02.07
@@ -198,6 +200,73 @@ class product:
             web.setcookie('access', i.access, 600)
             #print(open(r'product.html', 'r').read())
             return open(r'producthead.html', 'r').read() + result + open(r'productbottom.html', 'r').read()
+        else:
+            return web.redirect('login')
+
+class air:
+    def GET(self):
+        db = MySQLdb.connect("localhost", "phpmyadmin", "Hsw05270617", "phpmyadmin")
+
+        #使用cursor()方法获取操作游标
+        cursor = db.cursor()
+
+        # SQL 查询语句
+        sql = "SELECT * FROM air \
+                   WHERE INCOME > '%d'" % (1000)
+
+        path = 'static/images/'
+        files = os.listdir(path)
+        piclist = [];
+        colcount = 0
+        rowcount = 0
+        result = ''
+        for file in files:
+            if file[-3:] == 'png':
+                if colcount == 0:
+                    result += '<div class="row mt">'
+
+                result += '<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc"><div class="project-wrapper"><div class="project"><div class="photo-wrapper"><div class="photo">'
+                result += '<a class="fancybox" href="static/images/'+file+'"><img class="img-responsive" src="static/images/'+file+'" alt=""></a>'
+                result += '<div class="row mt"><div class="col-lg-12">'
+
+                type = file[0:file.find('_')]
+                file = file[file.find('_') + 1:]
+
+                model = file[0:file.find('_')]
+                file = file[file.find('_'):]
+                if file.find('E') != -1:
+                    lon = file[1:file.find('E') + 1]
+
+                    if file.find('N') != -1:
+                        lat = file[file.find('E') + 1:file.find('N') + 1]
+                    else:
+                        lat = file[file.find('E') + 1:file.find('S') + 1]
+                else:
+                    lon = file[1:file.find('W') + 1]
+
+                    if file.find('N') != -1:
+                        lat = file[file.find('W') + 1:file.find('N') + 1]
+                    else:
+                        lat = file[file.find('W') + 1:file.find('S') + 1]
+                if type == 'V':
+                    result += '<p>垂直剖面时序图（模式：' + model + '  坐标：'+ lon + ',' + lat +'）</p>'
+                elif type == 'G':
+                    result += '<p>地面要素时序图（模式：' + model + '  坐标：' + lon + ',' + lat + '）</p>'
+                elif type == 'A':
+                    result += '<p>灾害天气风险预报图（模式：' + model + '  坐标：' + lon + ',' + lat + '）</p>'
+                elif type == 'M':
+                    result += '<p>区域天气要素预报图（模式：GFS  区域）</p>'
+                result += '</div></div></div><div class="overlay"></div></div></div></div></div><!-- col-lg-4 -->'
+
+                if colcount == 2:
+                    result += '</div><!-- /row -->'
+                colcount += 1
+
+        if iscookie()==True:
+            i = web.input(access='True')
+            web.setcookie('access', i.access, 600)
+            #print(open(r'product.html', 'r').read())
+            return open(r'air.html', 'r').read() + result + open(r'air.html', 'r').read()
         else:
             return web.redirect('login')
 
@@ -515,7 +584,7 @@ class userInfo:
 
         username = getusername()
 
-        return 'You have been logged in as ' + username + '. From IP: ' + client[0] + '\n Status:' + client[2]
+        return 'You have been logged in as ' + username + '. From IP: ' + client[0] + '\nStatus:' + client[2]
 
 if __name__ == "__main__":
     f = open('waitlistmission.sh', 'w+')
