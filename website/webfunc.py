@@ -1,6 +1,7 @@
 import web
 import MySQLdb
 import os
+from . import databasesearch
 urls = (
     '/index', 'index',
     '/login', 'login',
@@ -29,9 +30,9 @@ allowed = (
     #('user04','1huxe271'),# ~2017.02.03
     ('user05','sd7ar9d2'),# ~2017.06.03
     #('user06','sa675scz'),# ~2017.02.03
-    ('user07','a8sd979a'),# ~2017.02.05
-    ('user08','sd8f7sf9'),# ~2017.02.05
-    ('user09','asd7bc9v'),#~2017.02.07
+    #('user07','a8sd979a'),# ~2017.02.05
+    #('user08','sd8f7sf9'),# ~2017.02.05
+    ('user09','asd7bc9v'),#~2017.03.07
     ('user10','njgf9f87'),#~2017.02.21微信：不忘初心Cheny
     ('user11','4fjkl24d'),#~2017.02.21QQ# ：qxahz
     ('user12','534d29qf')#
@@ -203,16 +204,9 @@ class product:
         else:
             return web.redirect('login')
 
+# ******************* DEVELOPPING *******************
 class air:
     def GET(self):
-        db = MySQLdb.connect("localhost", "phpmyadmin", "Hsw05270617", "phpmyadmin")
-
-        #使用cursor()方法获取操作游标
-        cursor = db.cursor()
-
-        # SQL 查询语句
-        sql = "SELECT * FROM air \
-                   WHERE INCOME > '%d'" % (1000)
 
         path = 'static/images/'
         files = os.listdir(path)
